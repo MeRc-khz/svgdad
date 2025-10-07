@@ -27,6 +27,9 @@
             "scripts": [
               "node_modules/chart.js/dist/Chart.js",
               "node_modules/hammerjs/hammer.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "immutable"
             ]
           },
           "configurations": {
@@ -138,5 +141,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": "07f46e00-6ea3-4889-96d3-5095b8821361"
   }
 }

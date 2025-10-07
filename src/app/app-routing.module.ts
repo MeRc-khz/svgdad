@@ -6,8 +6,8 @@ import { LoginComponent } from './components/authentication/login/login.componen
 const routes: Routes = [
   {path: '', redirectTo: '/products', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'landing', loadChildren: 'app/features/landing/landing.module#LandingModule'},
-  {path: 'products', loadChildren: 'app/features/products/products.module#ProductsModule'},
+  {path: 'landing', loadChildren: () => import('./features/landing/landing.module').then(m => m.LandingModule)},
+  {path: 'products', loadChildren: () => import('./features/products/products.module').then(m => m.ProductsModule)},
 ]
 
 @NgModule({

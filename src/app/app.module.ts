@@ -13,9 +13,9 @@ import { SidebarModule } from './components/sidebar/sidebar.module';
 import { AuthenticationModule } from './components/authentication/authentication.module';
 
 /* Material.angular.io Component Library */ //create a met2module
-import { MatToolbarModule } from '@angular/material';
-import { MatButtonModule } from '@angular/material';
-import { MatIconModule } from '@angular/material';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from './core/core.module';
 
 /* ngrx/store */

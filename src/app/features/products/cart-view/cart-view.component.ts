@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { CatalogStore } from '../store/catalog-store.service'
-import { MatTableDataSource } from '@angular/material'
+import { MatTableDataSource } from '@angular/material/table'
 import { CatalogItem } from '../store/CatalogItem';
 import { List } from 'immutable';
 import { CurrencyPipe } from '@angular/common';

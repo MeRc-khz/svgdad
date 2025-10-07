@@ -18,7 +18,7 @@ export class CatalogStore {
     this.getItems();
   }
   removeFromBasket(deleteItem) {
-    return new Promise((res,rej) => {
+    return new Promise<void>((res,rej) => {
       let collection:List<CatalogItem> = this._basket.getValue();
       let index = collection.findIndex(idx => idx.id === deleteItem.id);
       this._basket.next(collection.delete(index));

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment as ENV } from '../../environments/environment';
 
-import 'rxjs/add/operator/map';
 import { Observable, of } from 'rxjs';
-import 'rxjs/add/observable/of';
+import { map } from 'rxjs/operators';
 import { ISetCfg } from './core.interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 @Injectable()
@@ -16,7 +15,7 @@ export class NetReqService {
     let fullUrl = `${ENV.urleasy}/${exePath}${url}`;
     const myHeaders = new HttpHeaders({'X-Operator': 'kris', 'Content-Type': 'application/x-www-form-urlencoded'})
     return this.http.get('assets/mockRating.json', {headers: myHeaders})
-      //.pipe(map(res => res))
+      .pipe(map(res => res))
   }
 
   setOverride(config:ISetCfg) {
@@ -49,9 +48,9 @@ export class NetReqService {
     let myParams = new HttpParams();
     myParams = myParams.append('id','1');
 
-    this.http 
+    return this.http 
       .get( 'assets/mockRating.json'/* `${ENV.speakeasy}/v1/override/view?url=${config.url}` */, {headers: myHeaders, params: myParams})
-      //.pipe(map(res => res))
+      .pipe(map(res => res))
   }
 
   viewAllOverrides() {
@@ -63,7 +62,7 @@ export class NetReqService {
     });
     return this.http
       .get('assets/mockData/mockOverrides.json'/* `${ENV.speakeasy}/v1/override/viewall` */, {headers: myHeaders})
-      //.pipe(map(res => res))
+      .pipe(map(res => res))
   }
 
   healthCheck() {
@@ -71,7 +70,7 @@ export class NetReqService {
 
     return this.http
       .get(`${ENV.urleasy}/v1/healthcheck`)
-      //.map(res => res.json())
+      .pipe(map(res => res))
 
     /* return Observable.of([ 
       {

@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 //material
-import { MatCardModule } from '@angular/material';
-import { MatButtonModule } from '@angular/material';
-import { MatInputModule } from '@angular/material';
-import { MatIconModule } from '@angular/material';
-import { MatSelectModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 
 //components
 import { ToasterComponent } from './toaster/toaster.component';
@@ -36,6 +36,7 @@ import { ProductsModule } from '../../features/products/products.module';
     MatSelectModule,
     MatInputModule,
     MatIconModule,
+    MatButtonModule,
     HttpClientModule,
     ProductsModule
   ],
