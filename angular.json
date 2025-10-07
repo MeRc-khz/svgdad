@@ -57,18 +57,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "svgdad:build"
+            "buildTarget": "svgdad:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "svgdad:build:production"
+              "buildTarget": "svgdad:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "svgdad:build"
+            "buildTarget": "svgdad:build"
           }
         },
         "test": {
