@@ -132,7 +132,6 @@
       }
     }
   },
-  "defaultProject": "svgdad",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
