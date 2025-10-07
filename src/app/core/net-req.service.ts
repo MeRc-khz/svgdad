@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment as ENV } from '../../environments/environment';
-import { Http, RequestOptions, Headers } from '@angular/http';
+
 import 'rxjs/add/operator/map';
 import { Observable, of } from 'rxjs';
 import 'rxjs/add/observable/of';
 import { ISetCfg } from './core.interface';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 @Injectable()
 export class NetReqService {
 
@@ -14,23 +14,21 @@ export class NetReqService {
    getUrlRating(url) {
     let exePath = 'v1/rate?url=';
     let fullUrl = `${ENV.urleasy}/${exePath}${url}`;
-    let myHeaders = new Headers({'X-Operator': 'kris', 'Content-Type': 'application/x-www-form-urlencoded'})
-    let opts = new RequestOptions({headers: myHeaders})
-    return this.http.get('assets/mockRating.json')
-      //.map(res => res.json())
+    const myHeaders = new HttpHeaders({'X-Operator': 'kris', 'Content-Type': 'application/x-www-form-urlencoded'})
+    return this.http.get('assets/mockRating.json', {headers: myHeaders})
+      //.pipe(map(res => res))
   }
 
   setOverride(config:ISetCfg) {
     //
     let body = `url=${config.url}&category=${config.category}&storedas=${config.storeas}`;
-    let myHeaders = new Headers({'X-Operator': config.user, 'Content-Type': 'application/x-www-form-urlencoded'})
-    let opts = new RequestOptions({headers: myHeaders})
+    const myHeaders = new HttpHeaders({'X-Operator': config.user, 'Content-Type': 'application/x-www-form-urlencoded'})
     /*this.http
-        .post(`${ENV.speakeasy}/v1/override/add`, body, opts)
-        .map(res => res.json()) */
+        .post(`${ENV.speakeasy}/v1/override/add`, body, {headers: myHeaders})
+        .pipe(map(res => res)) */
 
     return of([{}])
-    //.map(res => res[0])
+    //.pipe(map(res => res[0]))
   }
 
   deleteOverride(url) {
@@ -43,31 +41,29 @@ export class NetReqService {
 
   viewOverride(config:ISetCfg) {
     //GET /v1/override/view?url="<url_string>"
-    let myHeaders = new Headers({
+    const myHeaders = new HttpHeaders({
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'X-Operator': config.user
     });
-    let myParams = new URLSearchParams();
-    myParams.append('id','1');
+    let myParams = new HttpParams();
+    myParams = myParams.append('id','1');
 
-    let opts:RequestOptions = new RequestOptions({ headers: myHeaders/* , params: myParams */});
     this.http 
-      .get( 'assets/mockRating.json'/* `${ENV.speakeasy}/v1/override/view?url=${config.url}` */)
-      //.map(res => res.json())  
+      .get( 'assets/mockRating.json'/* `${ENV.speakeasy}/v1/override/view?url=${config.url}` */, {headers: myHeaders, params: myParams})
+      //.pipe(map(res => res))
   }
 
   viewAllOverrides() {
     // GET /v1/override/viewall
-    let myHeaders = new Headers({
+    const myHeaders = new HttpHeaders({
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'X-Operator': 'Kris'
     });
-    let opts:RequestOptions = new RequestOptions({headers: myHeaders});
     return this.http
-      .get('assets/mockData/mockOverrides.json'/* `${ENV.speakeasy}/v1/override/viewall` */)
-      //.map(res => res.json())
+      .get('assets/mockData/mockOverrides.json'/* `${ENV.speakeasy}/v1/override/viewall` */, {headers: myHeaders})
+      //.pipe(map(res => res))
   }
 
   healthCheck() {

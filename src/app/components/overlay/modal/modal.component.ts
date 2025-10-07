@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { categories, storedAs } from './modal.model';
 import { ModalNetService } from './services/modal-net.service';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'psn-modal',
@@ -14,7 +14,7 @@ export class ModalComponent implements OnInit {
   overrideForm:FormGroup;
   categories = ['SAFE1', 'UNSAFE4', 'LEVEL5'];
   storedAs = ['BASE', 'ASIS'];
-  constructor(public http:Http, private fb:FormBuilder, public modalNetService:ModalNetService) { 
+  constructor(public http:HttpClient, private fb:FormBuilder, public modalNetService:ModalNetService) { 
     this.createOverrideForm();
   }
 

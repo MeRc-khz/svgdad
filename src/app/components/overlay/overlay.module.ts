@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, ReadyState } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 //material
 import { MatCardModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material';
@@ -36,7 +36,7 @@ import { ProductsModule } from '../../features/products/products.module';
     MatSelectModule,
     MatInputModule,
     MatIconModule,
-    HttpModule,
+    HttpClientModule,
     ProductsModule
   ],
   providers: [CatalogStore, ModalNetService, OverlayService],

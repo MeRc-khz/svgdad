@@ -3,7 +3,7 @@ import { CompItem } from './comp-item';
 import { HostDirective } from './host/host.directive';
 import { IUtil } from '../../core/core.interface';
 import { Subscription } from 'rxjs';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 //Components
 import { FootswitchComponent } from './footswitch/footswitch.component';
 import { ModalComponent } from './modal/modal.component';
@@ -33,7 +33,7 @@ export class OverlayComponent implements AfterViewInit, OnDestroy {
   interval: any;
   overlaySub:Subscription;
   storeSub:Subscription;
-  constructor(public catalogStore:CatalogStore, public modalNetService:ModalNetService, public http:Http, private overlayService:OverlayService, private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(public catalogStore:CatalogStore, public modalNetService:ModalNetService, public http:HttpClient, private overlayService:OverlayService, private componentFactoryResolver: ComponentFactoryResolver) {
     console.log('we in here');
     this.modalSub = modalNetService.modalState.subscribe( msg => {
       if(msg.type == "CLOSE_MODAL") {
