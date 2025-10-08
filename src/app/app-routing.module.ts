@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './components/authentication/login/login.component'
 
-const routes: Routes = [
+export const routes: Routes = [
   {path: '', redirectTo: '/products', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'landing', loadChildren: () => import('./features/landing/landing.module').then(m => m.LandingModule)},

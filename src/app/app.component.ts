@@ -6,12 +6,21 @@ import { SideList } from './components/side-list/side-list.model';
 import { ISideList } from './components/side-list/i-side-list';
 import { Observable } from 'rxjs';
 import { ToggleDrawer } from './components/side-list/side-list.actions';
-import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { SidebarModule } from './components/sidebar/sidebar.module';
+import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { OverlayModule } from './components/overlay/overlay.module';
+import { SideListModule } from './components/side-list/side-list.module';
 
 @Component({
   selector: 'svgdad-app',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [CommonModule, RouterModule, SidebarModule, MatToolbarModule, MatIconModule, MatButtonModule, OverlayModule, SideListModule]
 })
 export class AppComponent implements OnInit {
   comps: CompItem[];

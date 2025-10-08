@@ -1,17 +1,4 @@
-import {List,Record} from 'immutable';
-
-const ItemRecord = Record({
-    id: 0,
-    imgUri: "",
-    price: 0.00,
-    description: "",
-    title: "",
-    fit: "",
-    ordered: false,
-    quantity: 1
-});
-
-export class CatalogItem extends ItemRecord {
+export class CatalogItem {
 
     id: number;
     imgUri: string;
@@ -23,7 +10,14 @@ export class CatalogItem extends ItemRecord {
     quantity: number;
 
     constructor(props) {
-        super(props);
+        this.id = props.id;
+        this.imgUri = props.imgUri;
+        this.price = props.price;
+        this.description = props.description;
+        this.title = props.title;
+        this.fit = props.fit;
+        this.ordered = props.ordered;
+        this.quantity = props.quantity;
     }
 
 }

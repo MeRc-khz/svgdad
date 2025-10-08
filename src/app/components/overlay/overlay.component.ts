@@ -50,8 +50,8 @@ export class OverlayComponent implements AfterViewInit, OnDestroy {
       
     })
     this.storeSub = this.catalogStore.basket.subscribe((basketVal) => {
-      let nSize = basketVal.size;
-      console.log(basketVal.size)
+      let nSize = basketVal.length;
+      console.log(basketVal.length)
       this.cartSize.emit({value:nSize})
     })
   }

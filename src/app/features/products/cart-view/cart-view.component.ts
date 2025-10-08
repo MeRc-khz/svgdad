@@ -28,7 +28,7 @@ export class CartViewComponent implements OnInit, OnDestroy {
         this.total = DATA.reduce((accumulator, currentValue) => {
           return accumulator + (currentValue.price * currentValue.quantity);
         }, 0);
-        this.dataSource = DATA.toArray();
+        this.dataSource = DATA;
       });
       this.pymtHandler = StripeCheckout.configure({
         key: ENV.stripeKey,
