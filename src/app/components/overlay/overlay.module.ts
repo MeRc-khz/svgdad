@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 //material
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 //components
 import { ToasterComponent } from './toaster/toaster.component';
@@ -37,13 +38,13 @@ import { ProductsModule } from '../../features/products/products.module';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    MatFormFieldModule,
     HttpClientModule,
     ProductsModule
   ],
   providers: [CatalogStore, ModalNetService, OverlayService],
   declarations:[ NotifierComponent, ToasterComponent, FootswitchComponent, ModalComponent, OverlayComponent, HostDirective],
-  exports:[OverlayComponent],
-  entryComponents:[ItemViewComponent, ModalComponent]
+  exports:[OverlayComponent]
 })
 
 export class OverlayModule { }

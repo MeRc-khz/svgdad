@@ -14,7 +14,7 @@ import { AuthenticationModule } from './components/authentication/authentication
 
 /* Material.angular.io Component Library */ //create a met2module
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from './core/core.module';
 
