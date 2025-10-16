@@ -1,4 +1,4 @@
-import { Component, Input, Output,EventEmitter, ViewChild, ComponentFactoryResolver, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output,EventEmitter, ViewChild, ComponentFactoryResolver, AfterViewInit, OnDestroy, effect } from '@angular/core';
 import { CompItem } from './comp-item';
 import { HostDirective } from './host/host.directive';
 import { IUtil } from '../../core/core.interface';
@@ -32,7 +32,6 @@ export class OverlayComponent implements AfterViewInit, OnDestroy {
   modalSub: Subscription;
   interval: any;
   overlaySub:Subscription;
-  storeSub:Subscription;
   constructor(public catalogStore:CatalogStore, public modalNetService:ModalNetService, public http:HttpClient, private overlayService:OverlayService, private componentFactoryResolver: ComponentFactoryResolver) {
     console.log('we in here');
     this.modalSub = modalNetService.modalState.subscribe( msg => {
@@ -49,11 +48,12 @@ export class OverlayComponent implements AfterViewInit, OnDestroy {
       }
       
     })
-    this.storeSub = this.catalogStore.basket.subscribe((basketVal) => {
-      let nSize = basketVal.length;
-      console.log(basketVal.length)
-      this.cartSize.emit({value:nSize})
-    })
+    effect(() => {
+      const basketVal = this.catalogStore.basket();
+      const nSize = basketVal.length;
+      console.log(basketVal.length);
+      this.cartSize.emit({value:nSize});
+    });
   }
 
   ngAfterViewInit() {}

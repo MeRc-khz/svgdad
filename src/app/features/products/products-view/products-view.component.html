@@ -2,7 +2,7 @@
     <div class="content">
           <div class="item-list">
               <ul>
-                <li *ngFor="let item of catalog | async">
+                <li *ngFor="let item of catalog()">
                   <mat-card class="catalog-card grid-item">
                     <mat-card-header>
                       <mat-card-title>{{item.title}}</mat-card-title>

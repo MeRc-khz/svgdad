@@ -18,10 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from './core/core.module';
 
-/* ngrx/store */
-import { StoreModule } from '@ngrx/store';
 import { SideListModule } from './components/side-list/side-list.module';
-import { sideListReducer } from './components/side-list/side-list.reducer';
 
 //Service
 import { OverlayService } from './components/overlay/services/overlay.service';
@@ -38,7 +35,6 @@ import { OverlayService } from './components/overlay/services/overlay.service';
     MatIconModule,
     OverlayModule,
     AuthenticationModule,
-    StoreModule.forRoot(sideListReducer),
     CoreModule,
     SideListModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })

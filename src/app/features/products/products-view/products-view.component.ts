@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CatalogStore } from '../store/catalog-store.service';
 import { OverlayService } from '../../../components/overlay/services/overlay.service';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { CatalogItem } from '../store/CatalogItem';
 
 @Component({
@@ -11,7 +10,7 @@ import { CatalogItem } from '../store/CatalogItem';
   styleUrls: ['./products-view.component.scss']
 })
 export class ProductsViewComponent implements OnInit {
-  public catalog: Observable<CatalogItem[]>;
+  public catalog = this.catalogStore.catalog;
 
   constructor(public overlayService:OverlayService, public catalogStore:CatalogStore) { 
     this.loadData();
@@ -23,7 +22,6 @@ export class ProductsViewComponent implements OnInit {
     this.catalogStore.addToBasket(item, qty);
   }
   ngOnInit() {
-    this.catalog = this.catalogStore.catalog;
   }
 
   previewItem(item) {

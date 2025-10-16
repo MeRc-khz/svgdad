@@ -1,6 +1,6 @@
 <div class="container">
 <div class="cart-total">
-  <h1>Total: {{total | currency }}</h1>
+  <h1>Total: {{total() | currency }}</h1>
   <span class="flex-spacer"></span>
   <button mat-raised-button color="accent" (click)='handlePymt()'>Checkout</button>
 </div>
@@ -15,7 +15,7 @@
       <th>View</th>
       <th>Remove</th>
     </tr>
-    <tr *ngFor="let item of dataSource">
+    <tr *ngFor="let item of dataSource()">
       <td><img src="assets/images/painteddogs.png" alt="SVG D.A.D logo"></td> 
       <td><p>{{item.title}}</p></td>
       <td><p>{{item.description}}&#125;</p></td>

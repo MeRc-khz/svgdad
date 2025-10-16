@@ -25,7 +25,6 @@ import { HostDirective } from './host/host.directive';
 //service
 import { OverlayService } from './services/overlay.service';
 import { ModalNetService } from './modal/services/modal-net.service';
-import { CatalogStore } from '../../features/products/store/catalog-store.service';
 //modules
 import { ProductsModule } from '../../features/products/products.module';
 
@@ -42,7 +41,7 @@ import { ProductsModule } from '../../features/products/products.module';
     HttpClientModule,
     ProductsModule
   ],
-  providers: [CatalogStore, ModalNetService, OverlayService],
+  providers: [ModalNetService, OverlayService],
   declarations:[ NotifierComponent, ToasterComponent, FootswitchComponent, ModalComponent, OverlayComponent, HostDirective],
   exports:[OverlayComponent]
 })

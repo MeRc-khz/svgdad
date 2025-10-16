@@ -1,10 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { animate, state, trigger, style, transition } from '@angular/animations';
-import { Store } from '@ngrx/store';
-import { getToggle } from './side-list.reducer';
-import { SideList } from './side-list.model';
-import { Observable } from 'rxjs';
-import { ToggleDrawer } from './side-list.actions';
+import { SideListService } from './side-list.service';
 
 @Component({
   selector: 'khz-side-list',
@@ -18,25 +14,19 @@ import { ToggleDrawer } from './side-list.actions';
       state('close', style({
         transform: 'translateX(100%)'
       })),
-      transition('open <=> closed', animate('1000ms ease-in-out'))
+      transition('open <=> close', animate('1000ms ease-in-out'))
     ])
   ]
 })
 
-export class SideListComponent implements OnInit {
-  sideListState$: any;
-  sideList:SideList;
+export class SideListComponent {
+  
+  public sideListState = computed(() => this.sideListService.getShowDrawer() ? 'open' : 'close');
  
-  constructor(private store:Store<SideList>) {
-    this.sideListState$ = store.select(str => str['SideList']);
+  constructor(private sideListService: SideListService) {
   }
 
   clickHandler() {
-    this.store.dispatch(new ToggleDrawer())
+    this.sideListService.toggleDrawer();
   }
-
-  ngOnInit() {
-    this.sideListState$.subscribe(state => this.sideList = state.active); 
-  }
-
 }

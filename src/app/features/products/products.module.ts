@@ -16,8 +16,6 @@ import { ProductsContainerComponent } from './products-container/products-contai
 import { ProductsViewComponent } from './products-view/products-view.component';
 import { ItemViewComponent } from './item-view/item-view.component';
 import { CartViewComponent } from './cart-view/cart-view.component';
-//Store
-import { CatalogStore } from './store/catalog-store.service';
 
 //service
 import { CatalogHttpService } from './services/catalog-http.service';

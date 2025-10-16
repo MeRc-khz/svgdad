@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
-import { ActivatedRouteSnapshot } from '@angular/router'
+import { Component, OnInit, computed } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CatalogStore } from '../store/catalog-store.service'
 import { ModalNetService } from '../../../components/overlay/modal/services/modal-net.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'khz-item-view',
@@ -11,8 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./item-view.component.scss']
 })
 export class ItemViewComponent implements OnInit {
-  public sub: Subscription;
-  public item:any;
+  public item: any;
   constructor(public modalNetService:ModalNetService, public route:ActivatedRoute, public catalogStore:CatalogStore) {}
   ngOnInit() {
     let pId:number;
@@ -24,18 +21,14 @@ export class ItemViewComponent implements OnInit {
     this.loadData(pId);
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
   loadData(pId) {
     let storeView = 'catalog';
     if(this['data'].item.ordered) {
       storeView = 'basket';
     }
-    this.sub = this.catalogStore[storeView].subscribe(catalog => {
-      let result = catalog.filter(item => item.id === pId);
-      this.item = result.toArray()[0]
+    this.item = computed(() => {
+      const catalog = this.catalogStore[storeView]();
+      return catalog.find(item => item.id === pId);
     });
   }
 

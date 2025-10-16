@@ -3,23 +3,23 @@
     <div class="content">
           <div class="item-list">
               <!-- <ul>
-                <li *ngFor="let item of catalogStore.catalog | async"> -->
+                <li *ngFor="let item of catalogStore.catalog()"> -->
                   <ul>
                     <li>
                 
                   <mat-card class="catalog-card">
                     <mat-card-header>
-                      <mat-card-title>{{item.title}}</mat-card-title>
-                      <mat-card-subtitle>Ordered:{{item.ordered}}</mat-card-subtitle>
+                      <mat-card-title>{{item().title}}</mat-card-title>
+                      <mat-card-subtitle>Ordered:{{item().ordered}}</mat-card-subtitle>
                     </mat-card-header>
                     <img mat-card-image src="assets/images/painteddogs.png" alt="SVG D.A.D logo">
                     <mat-card-content>
-                      <h2>Price: {{item.price}}</h2>
-                      <h3>Quantity: {{item.quantity}}</h3>
-                      <p>{{item.description}}</p>
+                      <h2>Price: {{item().price}}</h2>
+                      <h3>Quantity: {{item().quantity}}</h3>
+                      <p>{{item().description}}</p>
                     </mat-card-content>
                     <mat-card-actions>
-                      <!-- <button *ngIf="!item.ordered" mat-raised-button color="primary" (click)="add2Basket(item)">Add to Cart</button> -->
+                      <!-- <button *ngIf="!item().ordered" mat-raised-button color="primary" (click)="add2Basket(item())">Add to Cart</button> -->
                       <button mat-raised-button (click)="closeModal()">Close</button>
                     </mat-card-actions>
                   </mat-card>

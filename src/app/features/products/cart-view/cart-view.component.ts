@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, computed } from '@angular/core'
 import { CatalogStore } from '../store/catalog-store.service'
 import { MatTableDataSource } from '@angular/material/table'
 import { CatalogItem } from '../store/CatalogItem';
@@ -6,7 +6,6 @@ import { List } from 'immutable';
 import { CurrencyPipe } from '@angular/common';
 import { OverlayService } from '../../../components/overlay/services/overlay.service';
 import { FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { environment as ENV } from '../../../../environments/environment';
 import { PaymentsService } from '../services/payments.service';
 @Component({
@@ -14,22 +13,18 @@ import { PaymentsService } from '../services/payments.service';
   templateUrl: './cart-view.component.html',
   styleUrls: ['./cart-view.component.scss']
 })
-export class CartViewComponent implements OnInit, OnDestroy {
-  public dataSource:CatalogItem[];
-  public total:number = 0;
-  private sub:Subscription;
+export class CartViewComponent implements OnInit {
+  public dataSource = this.catalogStore.basket;
+  public total = computed(() => {
+    return this.dataSource().reduce((accumulator, currentValue) => {
+      return accumulator + (currentValue.price * currentValue.quantity);
+    }, 0);
+  });
   private pymtHandler:any;
   private amount:number = 500;
   constructor(public paymentSvc:PaymentsService, public overlayService:OverlayService, public catalogStore:CatalogStore) {}
   
   ngOnInit() {
-    this.sub = this.catalogStore.basket
-      .subscribe((DATA) => {
-        this.total = DATA.reduce((accumulator, currentValue) => {
-          return accumulator + (currentValue.price * currentValue.quantity);
-        }, 0);
-        this.dataSource = DATA;
-      });
       this.pymtHandler = StripeCheckout.configure({
         key: ENV.stripeKey,
         image: "https://loremflickr.com/320/240",
@@ -40,14 +35,11 @@ export class CartViewComponent implements OnInit, OnDestroy {
       })
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
   handlePymt() {
     this.pymtHandler.open({
       name: 'FireStarter',
       excerpt: 'Deposit Funds to Account',
-      amount: +this.total.toString().replace('.','')
+      amount: +this.total().toString().replace('.','')
     })
   }
   removeItem(item) {
