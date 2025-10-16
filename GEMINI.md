@@ -1,4 +1,4 @@
-# Project: svgsad
+# Project: svgDad
 
 ## Project Overview
 
@@ -48,8 +48,8 @@ This will execute the end-to-end tests via Protractor.
 
 ## Development Conventions
 
-*   **Component Style:** The project uses SCSS for styling components.
-*   **State Management:** The project uses NgRx for state management.
-*   **Component Library:** The project uses Angular Material for UI components.
-*   **Routing:** The project uses the Angular Router for navigation, with lazy-loading for feature modules.
-*   **Standalone Components:** The root component is a standalone component, which is a newer feature in Angular.
+* **Component Style:** The project uses SCSS for styling components.
+* **State Management:** The project uses NgRx for state management.
+* **Component Library:** The project uses Angular Material for UI components.
+* **Routing:** The project uses the Angular Router for navigation, with lazy-loading for feature modules.
+* **Standalone Components:** The root component is a standalone component, which is a newer feature in Angular.
