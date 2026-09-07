@@ -13,17 +13,17 @@ export class ItemViewComponent implements OnInit {
   constructor(public modalNetService:ModalNetService, public route:ActivatedRoute, public catalogStore:CatalogStore) {}
   ngOnInit() {
     let pId:number;
-    if(this.hasOwnProperty('data')){
-      pId = this['data'].item.get('id');
+    if(this['data'] && this['data'].item){
+      pId = this['data'].item.id;
     }else {
-      pId = this.route.snapshot.params.pId;
+      pId = +this.route.snapshot.params.pId;
     }
     this.loadData(pId);
   }
 
   loadData(pId) {
     let storeView = 'catalog';
-    if(this['data'].item.ordered) {
+    if(this['data'] && this['data'].item && this['data'].item.ordered) {
       storeView = 'basket';
     }
     this.item = computed(() => {

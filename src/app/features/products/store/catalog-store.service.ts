@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { CatalogItem } from './CatalogItem';
 import { CatalogHttpService } from '../services/catalog-http.service';
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class CatalogStore {
   //Product Catalog
   private _catalog = signal<CatalogItem[]>([]);

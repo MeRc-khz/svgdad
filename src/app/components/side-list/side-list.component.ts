@@ -21,7 +21,7 @@ import { SideListService } from './side-list.service';
 
 export class SideListComponent {
   
-  public sideListState = computed(() => this.sideListService.getShowDrawer() ? 'open' : 'close');
+  public sideListState = computed(() => this.sideListService.getShowDrawer()() ? 'open' : 'close');
  
   constructor(private sideListService: SideListService) {
   }

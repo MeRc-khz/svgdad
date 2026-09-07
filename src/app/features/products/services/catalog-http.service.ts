@@ -9,7 +9,7 @@ import { Observable, of } from 'rxjs';
 */
 import { Items } from '../mock/items';
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class CatalogHttpService {
   constructor(private http:HttpClient) {}
 
