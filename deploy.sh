@@ -30,7 +30,7 @@ git add .
 if git diff --cached --quiet; then
     echo "No git changes to commit."
 else
-    git commit -m "feat(cart): Redesign shopping bag with slide-over drawer, 2-column layout, and Stripe flow"
+    git commit -m "feat: Add Savage Dad streetwear root landing page and unify design across entire site"
     echo "Changes committed locally."
     echo "Pushing to GitHub..."
     git push || echo "Git push requires credentials or SSH key. If using a personal access token, run 'git push' manually."

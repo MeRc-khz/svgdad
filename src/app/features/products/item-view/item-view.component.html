@@ -1,35 +1,46 @@
-<div class="outer-container">
-  <div class="container">
-    <div class="content">
-          <div class="item-list">
-              <!-- <ul>
-                <li *ngFor="let item of catalogStore.catalog()"> -->
-                  <ul>
-                    <li>
-                
-                  <mat-card class="catalog-card">
-                    <mat-card-header>
-                      <mat-card-title>{{item().title}}</mat-card-title>
-                      <mat-card-subtitle>Ordered:{{item().ordered}}</mat-card-subtitle>
-                    </mat-card-header>
-                    <img mat-card-image src="assets/images/painteddogs.png" alt="SVG D.A.D logo">
-                    <mat-card-content>
-                      <h2>Price: {{item().price}}</h2>
-                      <h3>Quantity: {{item().quantity}}</h3>
-                      <p>{{item().description}}</p>
-                    </mat-card-content>
-                    <mat-card-actions>
-                      <!-- <button *ngIf="!item().ordered" mat-raised-button color="primary" (click)="add2Basket(item())">Add to Cart</button> -->
-                      <button mat-raised-button (click)="closeModal()">Close</button>
-                    </mat-card-actions>
-                  </mat-card>
-                      
-                </li>
-              </ul>
-                <!-- </li>
-              </ul> -->
-            </div>
+<div class="modal-outer-overlay" (click)="closeModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()" *ngIf="item()">
+    
+    <div class="modal-header">
+      <span class="modal-badge">AUTHENTIC DROP</span>
+      <button mat-icon-button class="btn-modal-close" (click)="closeModal()" aria-label="Close modal">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
-    <div class="footer"></div>
+
+    <div class="modal-media-box">
+      <img [src]="item().imgUri || 'assets/images/painteddogs.png'" [alt]="item().title" class="modal-img">
+    </div>
+
+    <div class="modal-body">
+      <div class="title-price-row">
+        <h2 class="modal-item-title">{{ item().title }}</h2>
+        <span class="modal-item-price">{{ item().price | currency }}</span>
+      </div>
+
+      <p class="modal-item-desc" *ngIf="item().description">{{ item().description }}</p>
+
+      <div class="modal-specs">
+        <div class="spec-item">
+          <mat-icon>verified</mat-icon>
+          <span>Heavyweight Streetwear</span>
+        </div>
+        <div class="spec-item">
+          <mat-icon>local_shipping</mat-icon>
+          <span>Free Shipping Over $75</span>
+        </div>
+      </div>
+
+      <div class="modal-actions-row">
+        <button mat-raised-button class="btn-modal-add" (click)="add2Basket(item())">
+          <mat-icon>shopping_bag</mat-icon>
+          <span>ADD TO BAG</span>
+        </button>
+        <button mat-stroked-button class="btn-modal-dismiss" (click)="closeModal()">
+          CLOSE
+        </button>
+      </div>
+    </div>
+
   </div>
 </div>

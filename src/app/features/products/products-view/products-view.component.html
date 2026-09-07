@@ -1,29 +1,113 @@
-<div class="container">
-    <div class="content">
-          <div class="item-list">
-              <ul>
-                <li *ngFor="let item of catalog()">
-                  <mat-card class="catalog-card grid-item">
-                    <mat-card-header>
-                      <mat-card-title>{{item.title}}</mat-card-title>
-                      <!-- <mat-card-subtitle>Ordered:{{item.ordered}}</mat-card-subtitle> -->
-                    </mat-card-header>
-                    <img mat-card-image src="assets/images/painteddogs.png" alt="SVG D.A.D logo">
-                    <mat-card-content>
-                      <h2>{{item.price | currency}}</h2>
-                      <!-- <h3>{{item.id}}</h3> -->
-                      <p>{{item.description}}</p>
-                    </mat-card-content>
-                    <mat-card-actions>
-                      <button mat-raised-button color="primary" (click)="add2Basket(item, qty.value)">Add to Cart</button>
-                      <button mat-raised-button (click)="previewItem(item)">View Item</button>
-                      <mat-form-field class="qty-product-field">
-                          <input matInput type="number" placeholder="Quantity" min="1" [value]="item.quantity || 1" (change)="qtyValUpdated(item, qty.value)" #qty>
-                      </mat-form-field>
-                    </mat-card-actions>
-                  </mat-card>
-                </li>
-              </ul>
-            </div>
+<div class="catalog-page-container">
+
+  <!-- Catalog Header Section -->
+  <header class="catalog-header">
+    <div class="header-top-row">
+      <div>
+        <div class="drop-status-tag">
+          <mat-icon>local_fire_department</mat-icon>
+          <span>VAULT OPEN • DROP 001</span>
+        </div>
+        <h1 class="page-title">THE CURRENT DROP</h1>
+        <p class="page-sub">
+          Official Savage Dad streetwear and tactical prepper gear. Heavyweight builds designed to survive the pavement.
+        </p>
+      </div>
+
+      <div class="item-count-badge">
+        <span class="count-num">{{ filteredCatalog().length }}</span>
+        <span class="count-txt">PIECES LIVE</span>
+      </div>
     </div>
-  </div>
+
+    <!-- Free Shipping Tracker Strip -->
+    <div class="catalog-shipping-strip">
+      <div class="shipping-info">
+        <span *ngIf="amountToFreeShipping() > 0">
+          Add <strong>${{ amountToFreeShipping() | number:'1.2-2' }}</strong> more to unlock <strong>FREE STREET SHIPPING</strong>
+        </span>
+        <span *ngIf="amountToFreeShipping() === 0" class="shipping-unlocked">
+          <mat-icon>local_shipping</mat-icon>
+          <strong>FREE STREET SHIPPING UNLOCKED!</strong>
+        </span>
+        <span class="threshold-tag">$75 Threshold</span>
+      </div>
+      <div class="shipping-progress-track">
+        <div class="shipping-progress-bar" [style.width.%]="freeShippingProgress()"></div>
+      </div>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="category-filters-row">
+      <button 
+        *ngFor="let cat of categories" 
+        class="filter-pill" 
+        [class.active]="selectedCategory().toLowerCase() === cat.id.toLowerCase()"
+        (click)="selectCategory(cat.id)"
+      >
+        {{ cat.label }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Products Grid -->
+  <main class="products-grid-wrapper">
+    <div class="products-grid">
+      <article class="catalog-item-card" *ngFor="let item of filteredCatalog()">
+        
+        <!-- Media Visual -->
+        <div class="card-visual-wrap" (click)="previewItem(item)">
+          <img [src]="item.imgUri || 'assets/images/painteddogs.png'" [alt]="item.title" class="product-img">
+          <span class="pill-drop-badge">AUTHENTIC DROP</span>
+          <span class="quick-view-overlay">
+            <mat-icon>visibility</mat-icon>
+            <span>Quick View</span>
+          </span>
+        </div>
+
+        <!-- Details -->
+        <div class="card-details">
+          <div class="title-price-row">
+            <h2 class="item-title" (click)="previewItem(item)">{{ item.title }}</h2>
+            <span class="item-price">{{ item.price | currency }}</span>
+          </div>
+
+          <p class="item-desc" *ngIf="item.description">{{ item.description }}</p>
+
+          <div class="item-spec-tags">
+            <span class="spec-tag">HEAVYWEIGHT</span>
+            <span class="spec-tag">STREET STRUCTURED</span>
+          </div>
+
+          <!-- Controls & Actions -->
+          <div class="card-controls-row">
+            <!-- Stepper -->
+            <div class="stepper-wrap">
+              <button class="stepper-btn" (click)="decrementCardQty(item)" aria-label="Decrease quantity">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <span class="stepper-val">{{ getItemQty(item) }}</span>
+              <button class="stepper-btn" (click)="incrementCardQty(item)" aria-label="Increase quantity">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+
+            <!-- Add to Bag CTA -->
+            <button mat-raised-button class="btn-card-add" (click)="add2Basket(item)">
+              <mat-icon>shopping_bag</mat-icon>
+              <span>ADD TO BAG</span>
+            </button>
+
+            <!-- Quick View Icon -->
+            <button mat-icon-button class="btn-card-view" (click)="previewItem(item)" aria-label="View Details">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </div>
+
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+</div>

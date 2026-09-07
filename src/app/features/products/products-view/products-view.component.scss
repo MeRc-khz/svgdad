@@ -1,31 +1,439 @@
-* { box-sizing: border-box;}
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+}
 
-.container {
-  width: 100% !important;
-  
-  .content {
-    height: calc(100%);
-    .item-list {
-      width: 100%;
-      overflow-y: scroll;
-      height: calc(100vh - 65px);
-      ul {
-        margin: 0px;
-        padding: 0px;
+* {
+  box-sizing: border-box;
+}
+
+.catalog-page-container {
+  min-height: calc(100vh - 64px);
+  background-color: var(--sd-background, #1F1B16);
+  color: var(--sd-text-primary, #EBE1D9);
+  padding: 32px 24px 64px;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* ==========================================================================
+   Catalog Header
+   ========================================================================== */
+.catalog-header {
+  max-width: 1280px;
+  margin: 0 auto 36px;
+
+  .header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+
+    .drop-status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 182, 131, 0.12);
+      border: 1px solid rgba(255, 182, 131, 0.35);
+      color: var(--sd-primary, #FFB683);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+
+      mat-icon {
+        font-size: 16px;
+        height: 16px;
+        width: 16px;
+      }
+    }
+
+    .page-title {
+      font-family: var(--sd-font-display, 'Bangers', sans-serif);
+      font-size: clamp(36px, 4.5vw, 52px);
+      letter-spacing: 1.5px;
+      color: var(--sd-text-primary, #EBE1D9);
+      margin: 0 0 8px;
+    }
+
+    .page-sub {
+      font-size: 15px;
+      color: var(--sd-text-muted, #A89F95);
+      margin: 0;
+      max-width: 600px;
+      line-height: 1.5;
+    }
+
+    .item-count-badge {
+      background: var(--sd-surface-card, #25211D);
+      border: 1px solid var(--sd-border, #3E372E);
+      border-radius: 8px;
+      padding: 12px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .count-num {
+        font-family: var(--sd-font-display, 'Bangers', sans-serif);
+        font-size: 26px;
+        color: var(--sd-primary, #FFB683);
+        line-height: 1;
+      }
+
+      .count-txt {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        color: var(--sd-secondary, #DBC0A3);
+      }
+    }
+  }
+
+  /* Free Shipping Tracker Strip */
+  .catalog-shipping-strip {
+    background: var(--sd-surface-card, #25211D);
+    border: 1px solid var(--sd-border, #3E372E);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+
+    .shipping-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--sd-secondary, #DBC0A3);
+
+      strong {
+        color: var(--sd-primary, #FFB683);
+      }
+
+      .shipping-unlocked {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--sd-success, #A8D773);
+        font-weight: 700;
+
+        mat-icon {
+          font-size: 18px;
+          height: 18px;
+          width: 18px;
+        }
+      }
+
+      .threshold-tag {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--sd-text-muted, #A89F95);
+      }
+    }
+
+    .shipping-progress-track {
+      height: 6px;
+      background: var(--sd-background, #1F1B16);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 8px;
+      border: 1px solid var(--sd-border, #3E372E);
+
+      .shipping-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #A63E00, #FFB683);
+        border-radius: 3px;
+        transition: width 0.35s ease;
+      }
+    }
+  }
+
+  /* Category Filter Pills */
+  .category-filters-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .filter-pill {
+      background: var(--sd-surface-card, #25211D);
+      border: 1px solid var(--sd-border, #3E372E);
+      color: var(--sd-text-muted, #A89F95);
+      font-family: var(--sd-font-body, 'Roboto', sans-serif);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover {
+        border-color: var(--sd-primary, #FFB683);
+        color: var(--sd-text-primary, #EBE1D9);
+      }
+
+      &.active {
+        background: var(--sd-primary, #FFB683);
+        color: #1F1B16;
+        border-color: var(--sd-primary, #FFB683);
+        box-shadow: 0 4px 14px rgba(255, 182, 131, 0.3);
+      }
+    }
+  }
+}
+
+/* ==========================================================================
+   Products Grid
+   ========================================================================== */
+.products-grid-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+
+    .catalog-item-card {
+      background: var(--sd-surface-card, #25211D);
+      border: 1px solid var(--sd-border, #3E372E);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+      &:hover {
+        border-color: var(--sd-border-light, #524A3F);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+        .card-visual-wrap .product-img {
+          transform: scale(1.06);
+        }
+
+        .card-visual-wrap .quick-view-overlay {
+          opacity: 1;
+        }
+      }
+
+      /* Image Visual */
+      .card-visual-wrap {
+        position: relative;
+        height: 230px;
+        background: #181512;
         display: flex;
-        flex-flow: row wrap;
-        justify-content: space-around;
-        align-content: space-between;
-        list-style: none;
-        li {
-          padding: 10px;
-          .catalog-card {
-            width: 300px;
-            .qty-product-field {
-              width: 50px;
-              input { 
-                width: 50px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        overflow: hidden;
+
+        .product-img {
+          max-width: 82%;
+          max-height: 82%;
+          object-fit: contain;
+          transition: transform 0.25s ease;
+        }
+
+        .pill-drop-badge {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          background: rgba(0, 0, 0, 0.7);
+          border: 1px solid var(--sd-border, #3E372E);
+          color: var(--sd-primary, #FFB683);
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.5px;
+          padding: 2px 8px;
+          border-radius: 4px;
+        }
+
+        .quick-view-overlay {
+          position: absolute;
+          bottom: 12px;
+          background: rgba(0, 0, 0, 0.85);
+          color: var(--sd-text-primary, #EBE1D9);
+          font-size: 12px;
+          font-weight: 600;
+          padding: 6px 14px;
+          border-radius: 20px;
+          border: 1px solid var(--sd-border, #3E372E);
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          opacity: 0;
+          transition: opacity 0.2s ease;
+
+          mat-icon {
+            font-size: 16px;
+            height: 16px;
+            width: 16px;
+            color: var(--sd-primary, #FFB683);
+          }
+        }
+      }
+
+      /* Card Content */
+      .card-details {
+        padding: 20px 18px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        .title-price-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 12px;
+          margin-bottom: 8px;
+
+          .item-title {
+            font-family: var(--sd-font-display, 'Bangers', sans-serif);
+            font-size: 22px;
+            letter-spacing: 0.8px;
+            color: var(--sd-text-primary, #EBE1D9);
+            margin: 0;
+            cursor: pointer;
+            line-height: 1.2;
+            transition: color 0.15s ease;
+
+            &:hover {
+              color: var(--sd-primary, #FFB683);
+            }
+          }
+
+          .item-price {
+            font-family: var(--sd-font-display, 'Bangers', sans-serif);
+            font-size: 22px;
+            color: var(--sd-primary, #FFB683);
+            white-space: nowrap;
+          }
+        }
+
+        .item-desc {
+          font-size: 13px;
+          color: var(--sd-text-muted, #A89F95);
+          line-height: 1.45;
+          margin: 0 0 14px;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          flex: 1;
+        }
+
+        .item-spec-tags {
+          display: flex;
+          gap: 6px;
+          margin-bottom: 18px;
+
+          .spec-tag {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--sd-secondary, #DBC0A3);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+          }
+        }
+
+        /* Controls */
+        .card-controls-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: auto;
+
+          .stepper-wrap {
+            display: inline-flex;
+            align-items: center;
+            background: var(--sd-background, #1F1B16);
+            border: 1px solid var(--sd-border, #3E372E);
+            border-radius: 20px;
+            overflow: hidden;
+
+            .stepper-btn {
+              background: none;
+              border: none;
+              color: var(--sd-text-primary, #EBE1D9);
+              width: 28px;
+              height: 30px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: background-color 0.15s ease, color 0.15s ease;
+
+              mat-icon {
+                font-size: 16px;
+                height: 16px;
+                width: 16px;
               }
+
+              &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--sd-primary, #FFB683);
+              }
+            }
+
+            .stepper-val {
+              font-size: 13px;
+              font-weight: 700;
+              padding: 0 6px;
+              min-width: 20px;
+              text-align: center;
+              color: var(--sd-text-primary, #EBE1D9);
+            }
+          }
+
+          .btn-card-add {
+            flex: 1;
+            height: 40px;
+            background: var(--sd-primary, #FFB683) !important;
+            color: #1F1B16 !important;
+            font-family: var(--sd-font-body, 'Roboto', sans-serif);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: opacity 0.15s ease, transform 0.1s ease;
+
+            mat-icon {
+              font-size: 17px;
+              height: 17px;
+              width: 17px;
+            }
+
+            &:hover {
+              opacity: 0.95;
+              transform: translateY(-1px);
+            }
+          }
+
+          .btn-card-view {
+            color: var(--sd-secondary, #DBC0A3);
+            border: 1px solid var(--sd-border, #3E372E);
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+
+            &:hover {
+              color: var(--sd-primary, #FFB683);
+              border-color: var(--sd-primary, #FFB683);
             }
           }
         }

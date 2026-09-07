@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed } from '@angular/core';
 import { CompItem } from './components/overlay/comp-item';
 import { RouterModule } from '@angular/router';
 import { SidebarModule } from './components/sidebar/sidebar.module';
@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { OverlayModule } from './components/overlay/overlay.module';
 import { SideListModule } from './components/side-list/side-list.module';
 import { SideListService } from './components/side-list/side-list.service';
+import { CatalogStore } from './features/products/store/catalog-store.service';
 
 @Component({
   selector: 'svgdad-app',
@@ -19,21 +20,28 @@ import { SideListService } from './components/side-list/side-list.service';
 })
 export class AppComponent implements OnInit {
   comps: CompItem[];
-  showLeftSidebar;
-  cartSizeValue:number = 0;
-  constructor( private sideListService: SideListService) {}
+  showLeftSidebar = false;
 
-  
+  public basketCount = computed(() => {
+    return this.catalogStore.basket().reduce((acc, item) => acc + (item.quantity || 1), 0);
+  });
+
+  constructor(
+    private sideListService: SideListService,
+    public catalogStore: CatalogStore
+  ) {}
+
   ngOnInit() {}
 
   sidebarToggle() {
-    this.showLeftSidebar = this.showLeftSidebar ? false : true;
+    this.showLeftSidebar = !this.showLeftSidebar;
   }
+
   sideListToggle() {
     this.sideListService.toggleDrawer();
   }
+
   cartSize(val) {
-    this.cartSizeValue = val.value;
-    console.log(val)
+    console.log(val);
   }
 }

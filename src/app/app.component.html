@@ -1,26 +1,50 @@
-<khz-sidebar [showSidebar]="showLeftSidebar"></khz-sidebar>
+<khz-sidebar [showSidebar]="showLeftSidebar" (close)="sidebarToggle()"></khz-sidebar>
 
 <div class="khz-container">
-
   <div class="khz-content">
 
-    <mat-toolbar color="primary">
-      <button (click)="sidebarToggle()" mat-icon-button>
-          <mat-icon>menu</mat-icon>
+    <mat-toolbar class="savage-toolbar">
+      <button (click)="sidebarToggle()" mat-icon-button class="nav-btn-menu" aria-label="Open Navigation Menu">
+        <mat-icon>menu</mat-icon>
       </button>
-      <button mat-button routerLink="/landing" routerLinkActive="active">
-        <mat-icon>home</mat-icon>
-      </button>
-      <button mat-button color='accent' routerLink="/products" routerLinkActive="active">Products</button>
+
+      <a routerLink="/" class="brand-logo-link">
+        <span class="logo-txt">SAVAGE <span class="logo-accent">D.A.D.</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link-btn">
+          HOME
+        </a>
+        <a mat-button routerLink="/products" routerLinkActive="active" class="nav-link-btn highlight-drop">
+          THE DROP
+        </a>
+        <a mat-button routerLink="/products/cart" routerLinkActive="active" class="nav-link-btn">
+          BAG
+        </a>
+      </nav>
+
       <span class="flex-spacer"></span>
-      <span class='basket' [attr.basketcount]="cartSizeValue">
-        <button mat-icon-button color='accent' (click)="sideListToggle()" aria-label="Open Shopping Bag">
-          <mat-icon>shopping_cart</mat-icon>
+
+      <!-- Announcement pill on desktop -->
+      <div class="header-shipping-pill" routerLink="/products">
+        <mat-icon>local_shipping</mat-icon>
+        <span>FREE SHIPPING $75+</span>
+      </div>
+
+      <!-- Shopping Bag Button -->
+      <div class="basket-wrap" (click)="sideListToggle()" aria-label="Open Shopping Bag">
+        <button mat-icon-button class="nav-bag-btn">
+          <mat-icon>shopping_bag</mat-icon>
         </button>
-      </span>
+        <span class="basket-badge" *ngIf="basketCount() > 0">
+          {{ basketCount() }}
+        </span>
+      </div>
     </mat-toolbar>
-    <div class='outlet-container'>
-        <router-outlet></router-outlet>
+
+    <div class="outlet-container">
+      <router-outlet></router-outlet>
     </div>
 
   </div>

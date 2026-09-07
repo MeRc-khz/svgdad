@@ -1,7 +1,8 @@
-import { Component, OnInit, computed } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { CatalogStore } from '../store/catalog-store.service'
+import { Component, OnInit, computed } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CatalogStore } from '../store/catalog-store.service';
 import { ModalNetService } from '../../../components/overlay/modal/services/modal-net.service';
+import { SideListService } from '../../../components/side-list/side-list.service';
 
 @Component({
   selector: 'khz-item-view',
@@ -10,12 +11,19 @@ import { ModalNetService } from '../../../components/overlay/modal/services/moda
 })
 export class ItemViewComponent implements OnInit {
   public item: any;
-  constructor(public modalNetService:ModalNetService, public route:ActivatedRoute, public catalogStore:CatalogStore) {}
+
+  constructor(
+    public modalNetService: ModalNetService,
+    public route: ActivatedRoute,
+    public catalogStore: CatalogStore,
+    private sideListService: SideListService
+  ) {}
+
   ngOnInit() {
-    let pId:number;
-    if(this['data'] && this['data'].item){
+    let pId: number;
+    if (this['data'] && this['data'].item) {
       pId = this['data'].item.id;
-    }else {
+    } else {
       pId = +this.route.snapshot.params.pId;
     }
     this.loadData(pId);
@@ -23,7 +31,7 @@ export class ItemViewComponent implements OnInit {
 
   loadData(pId) {
     let storeView = 'catalog';
-    if(this['data'] && this['data'].item && this['data'].item.ordered) {
+    if (this['data'] && this['data'].item && this['data'].item.ordered) {
       storeView = 'basket';
     }
     this.item = computed(() => {
@@ -33,11 +41,12 @@ export class ItemViewComponent implements OnInit {
   }
 
   add2Basket(item) {
-    this.catalogStore.addToBasket(item, item.quantity);
+    this.catalogStore.addToBasket(item, 1);
     this.closeModal();
+    this.sideListService.openDrawer();
   }
 
   closeModal() {
-    this.modalNetService.sendCloseModal({type:'CLOSE_MODAL'});
-   }
+    this.modalNetService.sendCloseModal({type: 'CLOSE_MODAL'});
+  }
 }

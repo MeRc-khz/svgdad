@@ -1,50 +1,69 @@
-<div class="khz-container" [@sidebarState]='activeSidebar'>
+<div class="khz-sidebar-overlay" *ngIf="activeSidebar === 'yes'" (click)="sidebarClose()"></div>
+
+<aside class="khz-container" [@sidebarState]="activeSidebar">
   <div class="khz-header">
-      <mat-toolbar color="accent">UrlEasy</mat-toolbar>
+    <div class="sidebar-brand">
+      <span class="brand-title">SAVAGE <span class="brand-accent">D.A.D.</span></span>
+      <span class="brand-tag">STREETWEAR & PREPPER GEAR</span>
+    </div>
+    <button mat-icon-button class="btn-close-sidebar" (click)="sidebarClose()" aria-label="Close Sidebar">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
+
   <div class="khz-content">
     <div class="khz-scroll-container">
-        <mat-nav-list>
-            <mat-list-item>
-               <a matLine href="...">UrlEeasy</a>
-               <button mat-icon-button>
-                  <mat-icon>track_changes</mat-icon>
-               </button>
-            </mat-list-item>
-            <mat-list-item>
-                <a matLine href="...">Thesuarus</a>
-                <button mat-icon-button>
-                   <mat-icon>query_builder</mat-icon>
-                </button>
-             </mat-list-item>
-             <mat-list-item>
-                <a matLine href="...">Security</a>
-                <button mat-icon-button>
-                   <mat-icon>pets</mat-icon>
-                </button>
-             </mat-list-item>
-             <mat-list-item>
-                <a matLine href="...">Policies</a>
-                <button mat-icon-button>
-                   <mat-icon>lightbulb_outline</mat-icon>
-                </button>
-             </mat-list-item>
-             <mat-list-item>
-                <a matLine href="...">Procedures</a>
-                <button mat-icon-button>
-                   <mat-icon>event_seat</mat-icon>
-                </button>
-             </mat-list-item>
-             <mat-list-item>
-                <a matLine href="...">FAQ</a>
-                <button mat-icon-button>
-                   <mat-icon>fingerprint</mat-icon>
-                </button>
-             </mat-list-item>
-          </mat-nav-list>
+      <nav class="sidebar-nav-list">
+        <a class="sidebar-link" (click)="navigateAndClose('/')">
+          <mat-icon>home</mat-icon>
+          <span>HOME</span>
+        </a>
+
+        <a class="sidebar-link highlight" (click)="navigateAndClose('/products')">
+          <mat-icon>storefront</mat-icon>
+          <span>THE CURRENT DROP</span>
+          <span class="link-badge">HOT</span>
+        </a>
+
+        <a class="sidebar-link" (click)="navigateAndClose('/products/cart')">
+          <mat-icon>shopping_bag</mat-icon>
+          <span>SHOPPING BAG</span>
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-section-title">THE VAULT CATEGORIES</div>
+
+        <a class="sidebar-link sub" (click)="navigateAndClose('/products')">
+          <mat-icon>checkroom</mat-icon>
+          <span>Heavyweight Tees</span>
+        </a>
+
+        <a class="sidebar-link sub" (click)="navigateAndClose('/products')">
+          <mat-icon>sports_baseball</mat-icon>
+          <span>Snapbacks & Hats</span>
+        </a>
+
+        <a class="sidebar-link sub" (click)="navigateAndClose('/products')">
+          <mat-icon>shield</mat-icon>
+          <span>Prepper EDC Gear</span>
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-promo-box">
+          <div class="promo-box-title">STREET VIP CODE</div>
+          <p>Use code <strong>SAVAGE10</strong> at checkout for 10% off your entire bag.</p>
+        </div>
+      </nav>
     </div>
   </div>
+
   <div class="khz-footer">
-    <button mat-button (click)="sidebarClose(false)">Close Sidebar</button>
+    <p class="footer-tagline">STAY READY. PROTECT THE TRIBE.</p>
+    <button mat-stroked-button class="btn-footer-close" (click)="sidebarClose()">
+      <mat-icon>chevron_left</mat-icon>
+      <span>CLOSE MENU</span>
+    </button>
   </div>
-</div>
+</aside>

@@ -1,4 +1,329 @@
-<div>
-  <h3>Savage Dad</h3>
-  <img src="assets/images/illielogo.png" />
+<div class="landing-page-root">
+
+  <!-- Top Drop Announcement Ticker -->
+  <aside class="drop-ticker-bar" aria-label="Drop Announcement">
+    <div class="ticker-track">
+      <span class="ticker-item"><mat-icon>local_fire_department</mat-icon> LIMITED DROP 001 LIVE</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item"><mat-icon>local_shipping</mat-icon> FREE STREET SHIPPING OVER $75</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item"><mat-icon>local_offer</mat-icon> USE CODE <strong>SAVAGE10</strong> FOR 10% OFF</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item"><mat-icon>security</mat-icon> NEVER SLEEP ON THE DROP</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item"><mat-icon>star</mat-icon> HEAVYWEIGHT COMBED COTTON ESSENTIALS</span>
+    </div>
+  </aside>
+
+  <!-- Hero Section -->
+  <section class="hero-section" aria-label="Hero">
+    <div class="hero-container">
+      
+      <div class="hero-content">
+        <div class="tag-row">
+          <span class="pill-tag">AUTHENTIC STREETWEAR</span>
+          <span class="pill-tag highlight">LIMITED BATCH DROP</span>
+          <span class="pill-tag">INNER-CITY HERITAGE</span>
+        </div>
+
+        <h1 class="hero-title">
+          YOU KNOW THE RULES.<br>
+          <span class="text-gradient">DON'T SLEEP ON THE DROP.</span>
+        </h1>
+
+        <p class="hero-sub">
+          Built for the grind. Designed for the streets. Heavyweight streetwear and prepper gear crafted with resilience, faith, and unapologetic protection for the modern patriarch.
+        </p>
+
+        <div class="hero-cta-group">
+          <button mat-raised-button class="btn-hero-primary" (click)="navigateToDrop()">
+            <mat-icon>shopping_bag</mat-icon>
+            <span>SECURE THE DROP</span>
+          </button>
+          <button mat-stroked-button class="btn-hero-secondary" (click)="navigateToDrop()">
+            <span>EXPLORE THE GEAR</span>
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+
+        <div class="hero-trust-row">
+          <div class="trust-pill">
+            <mat-icon>check_circle</mat-icon>
+            <span>240+ GSM Heavyweight</span>
+          </div>
+          <div class="trust-pill">
+            <mat-icon>bolt</mat-icon>
+            <span>24-48hr Rapid Dispatch</span>
+          </div>
+          <div class="trust-pill">
+            <mat-icon>lock</mat-icon>
+            <span>256-Bit Encrypted</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="visual-glow-ring"></div>
+        <div class="visual-card">
+          <img src="assets/images/painteddogs.png" alt="Savage Dad Street Logo" class="hero-logo-img">
+          <div class="badge-float badge-left">
+            <span class="badge-accent">AUTHENTIC</span>
+            <span class="badge-txt">STREET CUT</span>
+          </div>
+          <div class="badge-float badge-right">
+            <span class="badge-accent">DROP 001</span>
+            <span class="badge-txt">LIMITED RUN</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Key Value Props Banner -->
+  <section class="value-props-strip" aria-label="Brand Highlights">
+    <div class="props-grid">
+      <div class="prop-item">
+        <div class="prop-icon-wrap"><mat-icon>local_shipping</mat-icon></div>
+        <div class="prop-info">
+          <h4>FREE STREET SHIPPING</h4>
+          <p>Orders over $75 unlock free domestic transit.</p>
+        </div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-icon-wrap"><mat-icon>verified</mat-icon></div>
+        <div class="prop-info">
+          <h4>100% AUTHENTIC DROP</h4>
+          <p>Original designs built with inner-city pride.</p>
+        </div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-icon-wrap"><mat-icon>security</mat-icon></div>
+        <div class="prop-info">
+          <h4>ENCRYPTED CHECKOUT</h4>
+          <p>Secure Stripe card processing & instant receipts.</p>
+        </div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-icon-wrap"><mat-icon>shield</mat-icon></div>
+        <div class="prop-info">
+          <h4>PATRIARCH DURABILITY</h4>
+          <p>Double-stitched seams made for real work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Showcase -->
+  <section class="featured-section" aria-label="Featured Drops">
+    <div class="section-header">
+      <span class="section-tag">CURATED GEAR</span>
+      <h2 class="section-title">THE CURRENT DROP</h2>
+      <p class="section-sub">Exclusive pieces moving fast. Once inventory clears, the vault is locked.</p>
+    </div>
+
+    <div class="featured-grid">
+      <article class="product-card" *ngFor="let item of featuredItems()">
+        <div class="card-media-wrap" (click)="quickView(item, $event)">
+          <img [src]="item.imgUri || 'assets/images/painteddogs.png'" [alt]="item.title" class="product-thumb">
+          <span class="quick-view-btn"><mat-icon>visibility</mat-icon> Quick View</span>
+          <span class="drop-badge">AUTHENTIC DROP</span>
+        </div>
+
+        <div class="card-body">
+          <div class="card-title-row">
+            <h3 class="product-name" (click)="quickView(item, $event)">{{ item.title }}</h3>
+            <span class="product-price">{{ item.price | currency }}</span>
+          </div>
+
+          <p class="product-desc">{{ item.description }}</p>
+
+          <div class="card-actions">
+            <button mat-raised-button class="btn-add-bag" (click)="addToBag(item, $event)">
+              <mat-icon>shopping_bag</mat-icon>
+              <span>ADD TO BAG</span>
+            </button>
+            <button mat-icon-button class="btn-quick-icon" (click)="quickView(item, $event)" aria-label="Quick View">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="browse-all-row">
+      <button mat-raised-button class="btn-browse-all" (click)="navigateToDrop()">
+        <span>VIEW ALL GEAR IN THE DROP</span>
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </section>
+
+  <!-- The Savage Dad Way (Brand Manifesto) -->
+  <section class="manifesto-section" aria-label="The Savage Dad Manifesto">
+    <div class="section-header">
+      <span class="section-tag">OUR CODE</span>
+      <h2 class="section-title">THE SAVAGE DAD WAY</h2>
+      <p class="section-sub">Resilience, faith, and unapologetic protection. This is how we move.</p>
+    </div>
+
+    <div class="pillars-grid">
+      <!-- Pillar 1 -->
+      <div class="pillar-card">
+        <div class="pillar-icon-box">
+          <mat-icon>local_fire_department</mat-icon>
+        </div>
+        <h3 class="pillar-title">STREET AUTHENTICITY</h3>
+        <p class="pillar-desc">
+          Rooted in the inner-city streets of Hip Hop America. A survivor and father who cuts through the corporate noise. Direct, firm, and uncompromising on quality.
+        </p>
+        <span class="pillar-footer">NO FAKE TRENDS. ZERO COMPROMISE.</span>
+      </div>
+
+      <!-- Pillar 2 -->
+      <div class="pillar-card highlight-card">
+        <div class="pillar-icon-box">
+          <mat-icon>military_tech</mat-icon>
+        </div>
+        <h3 class="pillar-title">RENAISSANCE MAN</h3>
+        <p class="pillar-desc">
+          Generation X survivor, sneaker head, and tech prepper. Equipped with the knowledge to navigate any terrain, anticipate the drop, and stay ahead of the curve.
+        </p>
+        <span class="pillar-footer">ALWAYS READY. ALWAYS ADAPTABLE.</span>
+      </div>
+
+      <!-- Pillar 3 -->
+      <div class="pillar-card">
+        <div class="pillar-icon-box">
+          <mat-icon>shield</mat-icon>
+        </div>
+        <h3 class="pillar-title">PROTECTIVE PATRIARCH</h3>
+        <p class="pillar-desc">
+          Grounded in faith, honor, and an unwavering commitment to family. A mentor who ensures his tribe is provided for, respected, and shielded from the storm.
+        </p>
+        <span class="pillar-footer">STAND TALL. DEFEND THE TRIBE.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drop Categories Section -->
+  <section class="categories-section" aria-label="Categories">
+    <div class="section-header">
+      <span class="section-tag">GEAR LINEUP</span>
+      <h2 class="section-title">BUILT FOR EVERY STREET</h2>
+    </div>
+
+    <div class="categories-grid">
+      <div class="category-card" (click)="navigateToDrop('tees')">
+        <div class="cat-content">
+          <span class="cat-tag">ESSENTIAL CUTS</span>
+          <h3 class="cat-title">HEAVYWEIGHT TEES</h3>
+          <p class="cat-sub">240+ GSM structured cotton engineered to maintain form.</p>
+          <span class="cat-link">SHOP TEES <mat-icon>arrow_forward</mat-icon></span>
+        </div>
+      </div>
+
+      <div class="category-card" (click)="navigateToDrop('caps')">
+        <div class="cat-content">
+          <span class="cat-tag">STREET HEADWEAR</span>
+          <h3 class="cat-title">SNAPBACKS & HATS</h3>
+          <p class="cat-sub">Structured 95Fifty fit with bold embroidered crests.</p>
+          <span class="cat-link">SHOP HEADWEAR <mat-icon>arrow_forward</mat-icon></span>
+        </div>
+      </div>
+
+      <div class="category-card" (click)="navigateToDrop('hoodies')">
+        <div class="cat-content">
+          <span class="cat-tag">COLD-WEATHER ARMOR</span>
+          <h3 class="cat-title">TACTICAL HOODIES</h3>
+          <p class="cat-sub">Double-lined thermal fleece built for chilly street nights.</p>
+          <span class="cat-link">SHOP HOODIES <mat-icon>arrow_forward</mat-icon></span>
+        </div>
+      </div>
+
+      <div class="category-card" (click)="navigateToDrop('accessories')">
+        <div class="cat-content">
+          <span class="cat-tag">EVERYDAY CARRY</span>
+          <h3 class="cat-title">PREPPER GEAR</h3>
+          <p class="cat-sub">Solid cast belt buckles, bottle openers, and tactical EDC accessories.</p>
+          <span class="cat-link">SHOP GEAR <mat-icon>arrow_forward</mat-icon></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Street VIP Prepper's Circle Section -->
+  <section class="vip-section" aria-label="VIP Sign-up">
+    <div class="vip-card">
+      <div class="vip-badge-icon">
+        <mat-icon>verified</mat-icon>
+      </div>
+
+      <h2 class="vip-title">JOIN THE PREPPER'S CIRCLE</h2>
+      <p class="vip-sub">
+        Get priority access to limited drops, restock alerts, and secret street discounts.
+        Lock in now and use street code <strong class="code-highlight">SAVAGE10</strong> for <strong>10% off</strong> your first order.
+      </p>
+
+      <div class="vip-form" *ngIf="!vipSubscribed()">
+        <input 
+          type="email" 
+          class="vip-input" 
+          placeholder="ENTER YOUR STREET EMAIL" 
+          [(ngModel)]="emailInput" 
+          (keyup.enter)="joinVip()"
+        >
+        <button class="btn-vip-join" (click)="joinVip()">
+          <span>LOCK IN</span>
+          <mat-icon>bolt</mat-icon>
+        </button>
+      </div>
+
+      <p class="vip-error-msg" *ngIf="vipError()">{{ vipError() }}</p>
+
+      <div class="vip-confirmed-badge" *ngIf="vipSubscribed()">
+        <mat-icon>check_circle</mat-icon>
+        <span>YOU'RE LOCKED IN, POPS. USE CODE "SAVAGE10" AT CHECKOUT.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Brand Footer -->
+  <footer class="landing-footer">
+    <div class="footer-container">
+      <div class="footer-brand-col">
+        <div class="brand-title">SAVAGE D.A.D.</div>
+        <p class="brand-motto">STAY READY. PROTECT THE TRIBE.</p>
+        <p class="brand-copy">
+          Urban streetwear and prepper gear founded on strength, faith, and inner-city heritage.
+        </p>
+      </div>
+
+      <div class="footer-nav-col">
+        <h4>THE VAULT</h4>
+        <ul>
+          <li><a (click)="navigateToDrop()">The Current Drop</a></li>
+          <li><a (click)="navigateToDrop('tees')">Heavyweight Tees</a></li>
+          <li><a (click)="navigateToDrop('caps')">Snapbacks & Hats</a></li>
+          <li><a routerLink="/products/cart">Shopping Bag</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-nav-col">
+        <h4>INTEL & POLICIES</h4>
+        <ul>
+          <li><a (click)="joinVip()">Prepper's Circle</a></li>
+          <li><a>Free Shipping Over $75</a></li>
+          <li><a>Authenticity Guarantee</a></li>
+          <li><a>256-Bit Encrypted Checkout</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <span>© 2026 Savage Dad Inc. All Rights Reserved. Built for the Streets.</span>
+      <span class="designer-credit">svgdad.store</span>
+    </div>
+  </footer>
+
 </div>
