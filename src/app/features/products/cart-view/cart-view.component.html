@@ -1,33 +1,247 @@
-<div class="container">
-<div class="cart-total">
-  <h1>Total: {{total() | currency }}</h1>
-  <span class="flex-spacer"></span>
-  <button mat-raised-button color="accent" (click)='handlePymt()'>Checkout</button>
+<div class="cart-page-container">
+
+  <!-- Order Receipt Confirmation Modal -->
+  <div class="receipt-overlay" *ngIf="receipt()">
+    <div class="receipt-card">
+      <div class="receipt-badge-icon">
+        <mat-icon>verified</mat-icon>
+      </div>
+      <h2 class="receipt-title">ORDER SECURED!</h2>
+      <p class="receipt-subtitle">Your order is locked in. Stay ready for the drop dispatch.</p>
+      
+      <div class="receipt-order-id">
+        <span>ORDER NUMBER:</span>
+        <strong>#{{ receipt().orderId }}</strong>
+      </div>
+
+      <div class="receipt-items-summary">
+        <div class="receipt-row" *ngFor="let item of receipt().items">
+          <span class="item-name">{{ item.quantity }}x {{ item.title }}</span>
+          <span class="item-val">{{ (item.price * item.quantity) | currency }}</span>
+        </div>
+        <div class="receipt-divider"></div>
+        <div class="receipt-row receipt-total-row">
+          <span>Total Paid</span>
+          <strong>{{ receipt().total | currency }}</strong>
+        </div>
+      </div>
+
+      <button mat-raised-button class="btn-receipt-continue" (click)="dismissReceipt()">
+        CONTINUE BROWSING
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty Bag View -->
+  <div class="empty-cart-state" *ngIf="itemCount() === 0 && !receipt()">
+    <div class="empty-cart-visual">
+      <mat-icon>shopping_bag</mat-icon>
+    </div>
+    <h1 class="empty-cart-title">YOUR BAG IS EMPTY</h1>
+    <p class="empty-cart-desc">
+      Don't sleep on the drop. Exclusive tees, dad hats, and street gear are moving fast.
+    </p>
+    <button mat-raised-button class="btn-shop-drop" (click)="continueShopping()">
+      <mat-icon>storefront</mat-icon>
+      <span>EXPLORE THE DROP</span>
+    </button>
+  </div>
+
+  <!-- Active 2-Column Cart View -->
+  <div class="active-cart-wrapper" *ngIf="itemCount() > 0 && !receipt()">
+    
+    <!-- Header Section -->
+    <header class="cart-header">
+      <div class="cart-title-row">
+        <h1 class="page-title">SHOPPING BAG</h1>
+        <span class="count-pill">{{ itemCount() }} {{ itemCount() === 1 ? 'ITEM' : 'ITEMS' }}</span>
+      </div>
+      <p class="cart-sub">Review your gear and lock in your order.</p>
+    </header>
+
+    <!-- Main Layout Grid -->
+    <div class="cart-grid">
+
+      <!-- Column 1: Items List -->
+      <section class="items-column" aria-label="Bag items">
+        
+        <!-- Free Shipping Incentive Bar -->
+        <div class="shipping-incentive-card">
+          <div class="shipping-info-row">
+            <span *ngIf="amountToFreeShipping() > 0">
+              Add <strong>${{ amountToFreeShipping() | number:'1.2-2' }}</strong> more to unlock <strong>FREE SHIPPING</strong>
+            </span>
+            <span *ngIf="amountToFreeShipping() === 0" class="free-shipping-success">
+              <mat-icon>local_shipping</mat-icon>
+              <strong>FREE STREET SHIPPING UNLOCKED!</strong>
+            </span>
+            <span class="threshold-label">$75 Threshold</span>
+          </div>
+          <div class="incentive-progress-track">
+            <div class="incentive-progress-bar" [style.width.%]="freeShippingProgress()"></div>
+          </div>
+        </div>
+
+        <!-- Product Cards -->
+        <div class="cart-items-list">
+          <article class="cart-item-card" *ngFor="let item of basket()">
+            <!-- Thumbnail -->
+            <div class="item-visual-wrap" (click)="previewItem(item)">
+              <img [src]="item.imgUri || 'assets/images/painteddogs.png'" [alt]="item.title">
+              <span class="zoom-cue"><mat-icon>visibility</mat-icon></span>
+            </div>
+
+            <!-- Content Details -->
+            <div class="item-details">
+              <div class="title-and-price">
+                <h3 class="product-title" (click)="previewItem(item)">{{ item.title }}</h3>
+                <span class="unit-price">{{ (item.price * (item.quantity || 1)) | currency }}</span>
+              </div>
+              
+              <p class="product-desc" *ngIf="item.description">{{ item.description }}</p>
+              
+              <div class="meta-row">
+                <span class="badge-tag">AUTHENTIC DROP</span>
+                <span class="price-each" *ngIf="(item.quantity || 1) > 1">({{ item.price | currency }} each)</span>
+              </div>
+
+              <!-- Controls Row -->
+              <div class="item-controls-row">
+                <!-- Stepper -->
+                <div class="stepper-wrap">
+                  <button class="stepper-btn" (click)="decrement(item)" aria-label="Reduce quantity">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <span class="stepper-num">{{ item.quantity || 1 }}</span>
+                  <button class="stepper-btn" (click)="increment(item)" aria-label="Increase quantity">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+
+                <!-- Actions -->
+                <div class="actions-wrap">
+                  <button class="btn-action-text" (click)="previewItem(item)">
+                    <mat-icon>visibility</mat-icon>
+                    <span>Quick View</span>
+                  </button>
+                  <button class="btn-action-remove" (click)="removeItem(item)">
+                    <mat-icon>delete_outline</mat-icon>
+                    <span>Remove</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Continue shopping link -->
+        <div class="continue-shopping-row">
+          <button class="btn-continue-shopping" (click)="continueShopping()">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Continue Browsing The Drop</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- Column 2: Order Summary (Sticky) -->
+      <aside class="summary-column" aria-label="Order summary">
+        <div class="summary-card">
+          <h2 class="summary-title">ORDER SUMMARY</h2>
+
+          <!-- Price Breakdown -->
+          <div class="summary-rows">
+            <div class="summary-row">
+              <span class="label">Subtotal</span>
+              <span class="val">{{ subtotal() | currency }}</span>
+            </div>
+
+            <div class="summary-row">
+              <span class="label">Shipping</span>
+              <span class="val" [class.free-tag]="shippingCost() === 0">
+                {{ shippingCost() === 0 ? 'FREE' : (shippingCost() | currency) }}
+              </span>
+            </div>
+
+            <div class="summary-row">
+              <span class="label">Estimated Sales Tax (8.25%)</span>
+              <span class="val">{{ tax() | currency }}</span>
+            </div>
+
+            <div class="summary-row discount-row" *ngIf="discount() > 0">
+              <span class="label">Street Discount ({{ appliedCode() }})</span>
+              <span class="val discount-val">-{{ discount() | currency }}</span>
+            </div>
+          </div>
+
+          <!-- Promo Code Section -->
+          <div class="promo-section">
+            <div class="applied-promo-tag" *ngIf="appliedCode()">
+              <mat-icon>local_offer</mat-icon>
+              <span>{{ appliedCode() }}</span>
+              <button class="btn-remove-code" (click)="removePromo()" aria-label="Remove promo code">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+
+            <div class="promo-input-group" *ngIf="!appliedCode()">
+              <input 
+                type="text" 
+                class="promo-input" 
+                placeholder="STREET CODE (e.g. SAVAGE10)" 
+                [(ngModel)]="promoCodeInput"
+                (keyup.enter)="applyPromo()"
+              >
+              <button class="btn-apply-promo" (click)="applyPromo()">APPLY</button>
+            </div>
+
+            <p class="promo-msg success" *ngIf="promoSuccess()">{{ promoSuccess() }}</p>
+            <p class="promo-msg error" *ngIf="promoError()">{{ promoError() }}</p>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Grand Total Row -->
+          <div class="total-row">
+            <div class="total-label-wrap">
+              <span class="total-label">TOTAL</span>
+              <span class="total-sub">USD</span>
+            </div>
+            <span class="total-val">{{ grandTotal() | currency }}</span>
+          </div>
+
+          <!-- Checkout CTA -->
+          <button 
+            mat-raised-button 
+            class="btn-secure-bag" 
+            [disabled]="isProcessing() || itemCount() === 0" 
+            (click)="handleCheckout()"
+          >
+            <mat-icon *ngIf="!isProcessing()">lock</mat-icon>
+            <mat-icon *ngIf="isProcessing()" class="spinning">sync</mat-icon>
+            <span>{{ isProcessing() ? 'PROCESSING...' : 'SECURE THE BAG' }}</span>
+          </button>
+
+          <!-- Security & Guarantee Badges -->
+          <div class="trust-badges">
+            <div class="trust-item">
+              <mat-icon>security</mat-icon>
+              <span>256-Bit Encrypted Checkout</span>
+            </div>
+            <div class="trust-item">
+              <mat-icon>verified_user</mat-icon>
+              <span>100% Authentic Savage Dad Drop</span>
+            </div>
+            <div class="trust-item">
+              <mat-icon>bolt</mat-icon>
+              <span>Fast Streetwear Dispatch</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
 </div>
-<div class="content-table">
-  <table>
-    <tr>
-      <th>Product</th>
-      <th>Item</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>View</th>
-      <th>Remove</th>
-    </tr>
-    <tr *ngFor="let item of dataSource()">
-      <td><img src="assets/images/painteddogs.png" alt="SVG D.A.D logo"></td> 
-      <td><p>{{item.title}}</p></td>
-      <td><p>{{item.description}}</p></td>
-      <td><p>{{item.price | currency}}</p></td>
-      <td>
-        <mat-form-field class="qty-table-field">
-          <input matInput type="number" placeholder="Quantity" min="1" value="{{item.quantity}}" (change)="qtyValUpdated(item,qty.value)" #qty>
-        </mat-form-field>
-      </td>
-      <td><button mat-raised-button color="primary" (click)='previewItem(item)'>View</button></td>
-      <td><button mat-raised-button color="warn" (click)="removeItem(item)">Remove</button></td>
-    </tr>
-  </table>
-</div>
-</div>
+

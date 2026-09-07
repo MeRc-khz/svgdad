@@ -14,13 +14,10 @@
       <button mat-button color='accent' routerLink="/products" routerLinkActive="active">Products</button>
       <span class="flex-spacer"></span>
       <span class='basket' [attr.basketcount]="cartSizeValue">
-        <button mat-icon-button color='accent' routerLink="products/cart" routerLinkActive="active">
+        <button mat-icon-button color='accent' (click)="sideListToggle()" aria-label="Open Shopping Bag">
           <mat-icon>shopping_cart</mat-icon>
         </button>
       </span>
-      <button (click)="sideListToggle()" mat-icon-button>
-        <mat-icon>menu</mat-icon>
-      </button>
     </mat-toolbar>
     <div class='outlet-container'>
         <router-outlet></router-outlet>

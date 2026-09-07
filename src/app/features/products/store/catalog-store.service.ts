@@ -1,6 +1,34 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
 import { CatalogItem } from './CatalogItem';
 import { CatalogHttpService } from '../services/catalog-http.service';
+
+function loadBasketFromStorage(): CatalogItem[] {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const saved = localStorage.getItem('svgdad_basket');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.map(item => new CatalogItem(item));
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Could not load basket from localStorage:', e);
+  }
+  return [];
+}
+
+function saveBasketToStorage(items: CatalogItem[]): void {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('svgdad_basket', JSON.stringify(items));
+    }
+  } catch (e) {
+    console.warn('Could not save basket to localStorage:', e);
+  }
+}
+
 @Injectable({ providedIn: "root" })
 export class CatalogStore {
   //Product Catalog
@@ -8,38 +36,32 @@ export class CatalogStore {
   public readonly catalog = this._catalog.asReadonly();
 
   //Shopping Cart
-  private _basket = signal<CatalogItem[]>([]);
+  private _basket = signal<CatalogItem[]>(loadBasketFromStorage());
   public readonly basket = this._basket.asReadonly();
 
   constructor(private catalogHttp:CatalogHttpService) {
     this.getItems();
+    effect(() => {
+      saveBasketToStorage(this._basket());
+    });
   }
   removeFromBasket(deleteItem) {
     this._basket.update(collection => {
-      const index = collection.findIndex(idx => idx.id === deleteItem.id);
-      if (index !== -1) {
-        collection.splice(index, 1);
-      }
-      return collection;
+      return collection.filter(item => item.id !== deleteItem.id);
     });
   }
   updateCatalog(item, qty) {
+    const numQty = parseInt(qty, 10) > 0 ? parseInt(qty, 10) : 1;
     this._catalog.update(catalog => {
-      const index = catalog.findIndex(idx => idx.id === item.id);
-      if (index !== -1) {
-        const record = new CatalogItem({
-          id: item.id,
-          imgUri: item.imgUri,
-          price: item.price,
-          description: item.description,
-          title: item.title,
-          fit: item.fit,
-          ordered: item.ordered,
-          quantity: qty
-        });
-        catalog[index] = record;
-      }
-      return catalog;
+      return catalog.map(cItem => {
+        if (cItem.id === item.id) {
+          return new CatalogItem({
+            ...cItem,
+            quantity: numQty
+          });
+        }
+        return cItem;
+      });
     });
   }
   updateBasket(item, qty) {
@@ -47,23 +69,28 @@ export class CatalogStore {
   }
 
   addToBasket(item, qty) {
+    const parsed = parseInt(qty, 10);
+    const numQty = (!isNaN(parsed) && parsed > 0) ? parsed : 1;
     this._basket.update(basket => {
       const index = basket.findIndex(idx => idx.id === item.id);
-      if(index !== -1) {
-        qty = +qty + +basket[index].quantity;
-        const record = new CatalogItem({
-          id: item.id,
-          imgUri: item.imgUri,
-          price: item.price,
-          description: item.description,
-          title: item.title,
-          fit: item.fit,
+      if (index !== -1) {
+        const existing = basket[index];
+        const updatedQty = (+existing.quantity || 1) + numQty;
+        const updatedRecord = new CatalogItem({
+          id: existing.id,
+          imgUri: existing.imgUri || item.imgUri,
+          price: existing.price,
+          description: existing.description,
+          title: existing.title,
+          fit: existing.fit,
           ordered: true,
-          quantity: qty
+          quantity: updatedQty
         });
-        basket[index] = record;
+        const next = [...basket];
+        next[index] = updatedRecord;
+        return next;
       } else {
-        const record = new CatalogItem({
+        const newRecord = new CatalogItem({
           id: item.id,
           imgUri: item.imgUri,
           price: item.price,
@@ -71,17 +98,35 @@ export class CatalogStore {
           title: item.title,
           fit: item.fit,
           ordered: true,
-          quantity: qty
+          quantity: numQty
         });
-        basket.push(record);
+        return [...basket, newRecord];
+      }
+    });
+  }
+
+  updateBasketQty(item, qty) {
+    const numQty = parseInt(qty, 10);
+    if (isNaN(numQty) || numQty <= 0) {
+      this.removeFromBasket(item);
+      return;
+    }
+    this._basket.update(basket => {
+      const index = basket.findIndex(idx => idx.id === item.id);
+      if (index !== -1) {
+        const next = [...basket];
+        next[index] = new CatalogItem({
+          ...basket[index],
+          quantity: numQty
+        });
+        return next;
       }
       return basket;
     });
   }
 
-  updateBasketQty(item, qty) {
-    this.removeFromBasket(item);
-    this.addToBasket(item, qty);
+  clearBasket() {
+    this._basket.set([]);
   }
 
   getItems() {

@@ -1,12 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
-html body{ 
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+  --sd-bg: #1F1B16;
+  --sd-surface: #2B2723;
+  --sd-surface-card: #25211D;
+  --sd-surface-card-hover: #322D27;
+  --sd-border: #3E372E;
+  --sd-border-light: #524A3F;
+  --sd-primary: #FFB683;
+  --sd-primary-dark: #A63E00;
+  --sd-secondary: #DBC0A3;
+  --sd-text-primary: #EBE1D9;
+  --sd-text-muted: #A89F95;
+  --sd-success: #A8D773;
+  --sd-error: #FFB4AB;
+  --sd-cta-bg: #FFB683;
+  --sd-cta-text: #1F1B16;
+  --sd-font-display: 'Bangers', cursive, sans-serif;
+  --sd-font-body: 'Roboto', sans-serif;
+}
+
+html body { 
   display: block;
   overflow: hidden;
-  margin:0;
+  margin: 0;
   padding: 0;
   height: 100vh;
   width: 100vw;
+  background-color: var(--sd-bg);
+  color: var(--sd-text-primary);
+  font-family: var(--sd-font-body);
+}
+
+/* Custom modern scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--sd-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sd-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sd-primary);
 }

@@ -16,11 +16,10 @@
                     </mat-card-content>
                     <mat-card-actions>
                       <button mat-raised-button color="primary" (click)="add2Basket(item, qty.value)">Add to Cart</button>
-                      <!-- <button mat-raised-button routerLink="item/{{item.id}}">View Item</button> -->
                       <button mat-raised-button (click)="previewItem(item)">View Item</button>
                       <mat-form-field class="qty-product-field">
-                          <input matInput type="number" placeholder="Quantity" min="1" value="{{item.quantity}}" (change)="qtyValUpdated(item,qty.value)"  #qty>
-                        </mat-form-field>
+                          <input matInput type="number" placeholder="Quantity" min="1" [value]="item.quantity || 1" (change)="qtyValUpdated(item, qty.value)" #qty>
+                      </mat-form-field>
                     </mat-card-actions>
                   </mat-card>
                 </li>

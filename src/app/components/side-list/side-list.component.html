@@ -1,45 +1,104 @@
-<div class="psn-side-list-container" [@sideListState]="sideListState()">
-    <div class="list-content-container">
-        <mat-nav-list>
-            <mat-list-item>
-               <a matLine href="...">Speakeasy</a>
-               <button mat-icon-button>
-                  <mat-icon>track_changes</mat-icon>
-               </button>
-            </mat-list-item>
-            <mat-list-item>
-                <a matLine href="...">Dictionary</a>
-                <button mat-icon-button>
-                   <mat-icon>query_builder</mat-icon>
-                </button>
-             </mat-list-item>
-             <mat-list-item>
-                <a matLine href="...">Safety</a>
-                <button mat-icon-button>
-                   <mat-icon>pets</mat-icon>
-                </button>
-             </mat-list-item>
-             <mat-list-item>
-                <a matLine href="...">Policies</a>
-                <button mat-icon-button>
-                   <mat-icon>lightbulb_outline</mat-icon>
-                </button>
-             </mat-list-item>
-             <mat-list-item>
-                <a matLine href="...">Procedures</a>
-                <button mat-icon-button>
-                   <mat-icon>event_seat</mat-icon>
-                </button>
-             </mat-list-item>
-             <mat-list-item>
-                <a matLine href="...">FAQ</a>
-                <button mat-icon-button>
-                   <mat-icon>fingerprint</mat-icon>
-                </button>
-             </mat-list-item>
-          </mat-nav-list>
+<!-- Backdrop -->
+<div class="cart-drawer-backdrop" [@backdropState]="sideListState()" (click)="close()"></div>
+
+<!-- Slide-over Drawer Panel -->
+<aside class="cart-drawer" [@sideListState]="sideListState()" role="dialog" aria-label="Shopping Bag Drawer">
+  <!-- Drawer Header -->
+  <div class="drawer-header">
+    <div class="header-title-wrap">
+      <mat-icon class="header-icon">shopping_bag</mat-icon>
+      <h2 class="drawer-title">YOUR BAG</h2>
+      <span class="item-badge" *ngIf="itemCount() > 0">{{ itemCount() }}</span>
     </div>
-    <button mat-raised-button (click)='clickHandler()'>close side list</button>
+    <button mat-icon-button class="close-btn" (click)="close()" aria-label="Close drawer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Free Shipping Progress Tracker -->
+  <div class="shipping-tracker" *ngIf="itemCount() > 0">
+    <div class="shipping-label">
+      <span *ngIf="amountToFreeShipping() > 0">
+        Add <strong>${{ amountToFreeShipping() | number:'1.2-2' }}</strong> for <strong>FREE SHIPPING</strong>
+      </span>
+      <span *ngIf="amountToFreeShipping() === 0" class="shipping-unlocked">
+        <mat-icon>local_shipping</mat-icon> FREE STREET SHIPPING UNLOCKED
+      </span>
+    </div>
+    <div class="shipping-progress-bar">
+      <div class="progress-fill" [style.width.%]="freeShippingProgress()"></div>
+    </div>
+  </div>
+
+  <!-- Drawer Body -->
+  <div class="drawer-body">
+    <!-- Empty State -->
+    <div class="empty-drawer" *ngIf="itemCount() === 0">
+      <div class="empty-icon-wrap">
+        <mat-icon>shopping_bag</mat-icon>
+      </div>
+      <h3 class="empty-title">YOUR BAG IS EMPTY</h3>
+      <p class="empty-sub">Don't sleep on the drop. Exclusive tees, snapbacks, and survival gear are waiting.</p>
+      <button mat-raised-button class="btn-explore" (click)="goToProducts()">
+        EXPLORE THE DROP
+      </button>
+    </div>
+
+    <!-- Item List -->
+    <div class="drawer-item-list" *ngIf="itemCount() > 0">
+      <div class="drawer-item" *ngFor="let item of basket()">
+        <div class="item-thumb">
+          <img [src]="item.imgUri || 'assets/images/painteddogs.png'" [alt]="item.title">
+        </div>
+        <div class="item-info">
+          <div class="item-header-row">
+            <h4 class="item-title">{{ item.title }}</h4>
+            <button mat-icon-button class="btn-remove" (click)="removeItem(item)" aria-label="Remove item">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+          <div class="item-meta" *ngIf="item.fit">
+            <span class="fit-tag">Standard Drop</span>
+          </div>
+          <div class="item-actions-row">
+            <!-- Stepper -->
+            <div class="qty-stepper">
+              <button class="step-btn" (click)="decrement(item)" aria-label="Decrease quantity">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <span class="qty-val">{{ item.quantity || 1 }}</span>
+              <button class="step-btn" (click)="increment(item)" aria-label="Increase quantity">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <!-- Line total -->
+            <div class="item-price">
+              {{ (item.price * (item.quantity || 1)) | currency }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer Footer -->
+  <div class="drawer-footer" *ngIf="itemCount() > 0">
+    <div class="subtotal-row">
+      <span class="subtotal-label">Subtotal</span>
+      <span class="subtotal-val">{{ subtotal() | currency }}</span>
+    </div>
+    <p class="tax-note">Shipping & taxes calculated at checkout.</p>
     
-</div>
+    <button mat-raised-button class="btn-checkout" (click)="goToCart()">
+      <mat-icon>lock</mat-icon>
+      <span>SECURE THE BAG</span>
+      <span class="btn-total">{{ subtotal() | currency }}</span>
+    </button>
+
+    <button mat-button class="btn-view-cart" (click)="goToCart()">
+      VIEW FULL BAG
+    </button>
+  </div>
+</aside>
+
 

@@ -3,6 +3,7 @@ import { CatalogStore } from '../store/catalog-store.service';
 import { OverlayService } from '../../../components/overlay/services/overlay.service';
 import { FormControl } from '@angular/forms';
 import { CatalogItem } from '../store/CatalogItem';
+import { SideListService } from '../../../components/side-list/side-list.service';
 
 @Component({
   selector: 'khz-products-view',
@@ -12,7 +13,11 @@ import { CatalogItem } from '../store/CatalogItem';
 export class ProductsViewComponent implements OnInit {
   public catalog = this.catalogStore.catalog;
 
-  constructor(public overlayService:OverlayService, public catalogStore:CatalogStore) { 
+  constructor(
+    public overlayService: OverlayService,
+    public catalogStore: CatalogStore,
+    private sideListService: SideListService
+  ) { 
     this.loadData();
   }
   loadData() {
@@ -20,6 +25,7 @@ export class ProductsViewComponent implements OnInit {
   }
   add2Basket(item, qty) {
     this.catalogStore.addToBasket(item, qty);
+    this.sideListService.openDrawer();
   }
   ngOnInit() {
   }

@@ -14,4 +14,12 @@ export class SideListService {
   toggleDrawer() {
     this.showDrawer.update(value => !value);
   }
+
+  openDrawer() {
+    this.showDrawer.set(true);
+  }
+
+  closeDrawer() {
+    this.showDrawer.set(false);
+  }
 }
