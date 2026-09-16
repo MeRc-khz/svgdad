@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { MongoClient } = require('mongodb');
+const emailService = require('./email-service');
 
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -134,6 +135,13 @@ app.post('/api/stripe-webhook', async function (req, res) {
         { upsert: true }
       );
       console.log('ORDER PERSISTED:', order.id, r.upsertedCount ? '(new)' : '(updated)');
+      // Fulfillment emails — fire and forget; never block the webhook response
+      if (r.upsertedCount) {
+        emailService.sendOrderConfirmation(order)
+          .catch(err => console.error('Fulfillment email failed:', err.message));
+        emailService.sendOwnerNotification(order)
+          .catch(err => console.error('Owner email failed:', err.message));
+      }
     } catch (err) {
       console.error('ORDER PERSIST FAILED:', err.message);
       return res.status(500).json({ error: 'order persistence failed', received: true });
