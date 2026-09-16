@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "mongodb": "^7.6.0",
     "stripe": "^22.6.2"
   }
 }

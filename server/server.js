@@ -1,11 +1,29 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const { MongoClient } = require('mongodb');
 
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || '0.0.0.0';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27018';
+const MONGO_DB = process.env.MONGO_DB || 'svgdad';
 
 const app = express();
+
+// Mongo: orders collection (lazy singleton)
+let ordersCol = null;
+async function getOrdersCol() {
+  if (ordersCol) return ordersCol;
+  const client = new MongoClient(MONGO_URI, { serverSelectionTimeoutMS: 5000 });
+  await client.connect();
+  const col = client.db(MONGO_DB).collection('orders');
+  await col.createIndex({ id: 1 }, { unique: true }); // dedupe by checkout session id
+  ordersCol = col;
+  return col;
+}
+// Connect at boot; log but don't crash the storefront if Mongo hiccups
+getOrdersCol().then(() => console.log('Mongo connected:', MONGO_URI, '/', MONGO_DB))
+  .catch(err => console.error('Mongo connect failed (will retry on first order):', err.message));
 
 // Stripe webhook needs the RAW body for signature verification — mount before json parser
 app.use('/api/stripe-webhook', bodyParser.raw({ type: '*/*' }));
@@ -81,11 +99,8 @@ app.post('/api/create-checkout-session', async function (req, res) {
   });
 });
 
-// Stripe webhook: record completed orders
-const orders = [];  // in-memory ledger until Mongo-backed orders land
-const seenEvents = new Set();  // idempotency
-
-app.post('/api/stripe-webhook', function (req, res) {
+// Stripe webhook: record completed orders (Mongo-persisted, idempotent)
+app.post('/api/stripe-webhook', async function (req, res) {
   if (!stripe) return res.status(400).json({ error: 'stripe not configured' });
   const sig = req.headers['stripe-signature'];
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -93,36 +108,50 @@ app.post('/api/stripe-webhook', function (req, res) {
   try {
     event = secret
       ? stripe.webhooks.constructEvent(req.body, sig, secret)
-      : JSON.parse(req.body);  // dev only: no verification without secret
+      : JSON.parse(req.body); // dev only: no verification without secret
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  if (seenEvents.has(event.id)) return res.json({ received: true, duplicate: true });
-  seenEvents.add(event.id);
-
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const order = {
       id: session.id,
+      eventId: event.id,
       amount: session.amount_total,
       currency: session.currency,
       email: session.customer_details && session.customer_details.email,
-      items: session.metadata && session.metadata.items,
+      shipping: session.shipping_details || null,
       payment_status: session.payment_status,
       created: new Date().toISOString()
     };
-    orders.push(order);
-    console.log('ORDER RECORDED:', JSON.stringify(order));
-    // TODO: Mongo persistence + fulfillment email trigger
+    try {
+      const col = await getOrdersCol();
+      const r = await col.updateOne(
+        { id: order.id },
+        { $set: order, $setOnInsert: { firstSeen: order.created } },
+        { upsert: true }
+      );
+      console.log('ORDER PERSISTED:', order.id, r.upsertedCount ? '(new)' : '(updated)');
+    } catch (err) {
+      console.error('ORDER PERSIST FAILED:', err.message);
+      return res.status(500).json({ error: 'order persistence failed', received: true });
+    }
   }
 
   res.json({ received: true });
 });
 
-app.get('/api/orders', function (req, res) {
-  res.json({ count: orders.length, orders });
+// Orders API — read from Mongo, newest first
+app.get('/api/orders', async function (req, res) {
+  try {
+    const col = await getOrdersCol();
+    const orders = await col.find({}).sort({ created: -1 }).limit(200).toArray();
+    return res.json({ count: orders.length, orders });
+  } catch (err) {
+    return res.status(500).json({ error: 'orders unavailable', message: err.message });
+  }
 });
 
 // SPA wildcard fallback
