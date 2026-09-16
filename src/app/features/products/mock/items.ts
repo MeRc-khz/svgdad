@@ -1,10 +1,11 @@
 export const Items = [{
   "id": 0,
-  "imgUri": "assets/images/painteddogs.png",
-  "title": "SVG D.@.D T-Shirt",
+  "imgUri": "assets/images/products/bzrlnx-tee-front.jpg",
+  "imgUriAlt": "assets/images/products/bzrlnx-tee-back.jpg",
+  "title": "BzrLnx QR Tee",
   "fit": ["small","medium","large","x-large", "xx-large"],
-  "description": "Cotton blend T-shirt slim fit for the SVG D.@.D",
-  "price": 65.28,
+  "description": "White cotton tee with the BzrLnx QR-code chest print — scan it, land on the site. Front graphic, QR back print.",
+  "price": 35.00,
   "ordered": false,
   "quantity": 1
 },{
