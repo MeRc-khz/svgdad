@@ -7,6 +7,9 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 const app = express();
 
+// Stripe webhook needs the RAW body for signature verification — mount before json parser
+app.use('/api/stripe-webhook', bodyParser.raw({ type: '*/*' }));
+
 // Middleware
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -76,6 +79,50 @@ app.post('/api/create-checkout-session', async function (req, res) {
     total: totalAmount,
     message: 'Order simulated successfully. Configure STRIPE_SECRET_KEY for live Stripe processing.'
   });
+});
+
+// Stripe webhook: record completed orders
+const orders = [];  // in-memory ledger until Mongo-backed orders land
+const seenEvents = new Set();  // idempotency
+
+app.post('/api/stripe-webhook', function (req, res) {
+  if (!stripe) return res.status(400).json({ error: 'stripe not configured' });
+  const sig = req.headers['stripe-signature'];
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  let event;
+  try {
+    event = secret
+      ? stripe.webhooks.constructEvent(req.body, sig, secret)
+      : JSON.parse(req.body);  // dev only: no verification without secret
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (seenEvents.has(event.id)) return res.json({ received: true, duplicate: true });
+  seenEvents.add(event.id);
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    const order = {
+      id: session.id,
+      amount: session.amount_total,
+      currency: session.currency,
+      email: session.customer_details && session.customer_details.email,
+      items: session.metadata && session.metadata.items,
+      payment_status: session.payment_status,
+      created: new Date().toISOString()
+    };
+    orders.push(order);
+    console.log('ORDER RECORDED:', JSON.stringify(order));
+    // TODO: Mongo persistence + fulfillment email trigger
+  }
+
+  res.json({ received: true });
+});
+
+app.get('/api/orders', function (req, res) {
+  res.json({ count: orders.length, orders });
 });
 
 // SPA wildcard fallback
