@@ -80,6 +80,12 @@ app.post('/api/create-checkout-session', async function (req, res) {
         payment_method_types: ['card'],
         line_items,
         mode: 'payment',
+        shipping_address_collection: {
+          allowed_countries: ['US', 'CA']
+        },
+        phone_number_collection: {
+          enabled: true
+        },
         success_url: (successUrl || `${req.protocol}://${req.get('host')}/products/cart?status=success`) + '&session_id={CHECKOUT_SESSION_ID}',
         cancel_url: cancelUrl || `${req.protocol}://${req.get('host')}/products/cart?status=cancelled`
       });
