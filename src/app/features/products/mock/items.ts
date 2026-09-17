@@ -3,7 +3,7 @@
 // switches from this static list to a real HTTP catalog automatically.
 export const Items = [{
   "id": 0,
-  "imgUri": "assets/images/products/bzrlnx-tee-front.jpg",
+  "imgUri": "assets/images/products/bzrlnx-tee-front-clean.jpg",
   "imgUriAlt": "assets/images/products/bzrlnx-tee-back.jpg",
   "title": "BzrLnx QR Tee",
   "fit": ["small","medium","large","x-large", "xx-large"],
