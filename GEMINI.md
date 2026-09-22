@@ -48,7 +48,14 @@ This will execute the end-to-end tests via Protractor.
 
 ## Development Conventions
 
-* **Component Style:** The project uses SCSS for styling components.
+* **Component Style:** The project uses SCSS for styling components. All styling
+  must use the `--sd-*` CSS custom properties from `src/assets/styles.scss`
+  (Savage Dad dark theme: bg `#1F1B16`, primary Sunburn Orange `#FFB683`/`#A63E00`,
+  secondary Earthy Tan `#DBC0A3`, text `#EBE1D9`). Bangers for display headings,
+  Roboto for body/UI. Never use Material's default indigo (#3f51b5) or pink
+  (#f44336/#ff4081) — the `indigo-pink.css` prebuilt import is base-only.
+* **Design source of truth:** `The Savage Dad Style Guide.md` (brand persona,
+  tone, M3 token overrides, imagery rules) and `src/assets/styles.scss` (tokens).
 * **State Management:** The project uses NgRx for state management.
 * **Component Library:** The project uses Angular Material for UI components.
 * **Routing:** The project uses the Angular Router for navigation, with lazy-loading for feature modules.
