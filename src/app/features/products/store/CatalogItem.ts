@@ -2,6 +2,9 @@ export class CatalogItem {
 
     id: number;
     imgUri: string;
+    imgUriAlt?: string;
+    images?: string[];
+    size?: string;
     price: number;
     description: string;
     title: string;

@@ -46,8 +46,9 @@ export class CatalogStore {
     });
   }
   removeFromBasket(deleteItem) {
+    const delSize = deleteItem.size || '';
     this._basket.update(collection => {
-      return collection.filter(item => item.id !== deleteItem.id);
+      return collection.filter(item => !(item.id === deleteItem.id && (item.size || '') === delSize));
     });
   }
   updateCatalog(item, qty) {
@@ -71,14 +72,18 @@ export class CatalogStore {
   addToBasket(item, qty) {
     const parsed = parseInt(qty, 10);
     const numQty = (!isNaN(parsed) && parsed > 0) ? parsed : 1;
+    const itemSize = item.size || '';
     this._basket.update(basket => {
-      const index = basket.findIndex(idx => idx.id === item.id);
+      const index = basket.findIndex(idx => idx.id === item.id && (idx.size || '') === itemSize);
       if (index !== -1) {
         const existing = basket[index];
         const updatedQty = (+existing.quantity || 1) + numQty;
         const updatedRecord = new CatalogItem({
           id: existing.id,
           imgUri: existing.imgUri || item.imgUri,
+          imgUriAlt: existing.imgUriAlt || item.imgUriAlt,
+          images: existing.images || item.images,
+          size: itemSize || existing.size,
           price: existing.price,
           description: existing.description,
           title: existing.title,
@@ -93,6 +98,9 @@ export class CatalogStore {
         const newRecord = new CatalogItem({
           id: item.id,
           imgUri: item.imgUri,
+          imgUriAlt: item.imgUriAlt,
+          images: item.images,
+          size: itemSize || item.size,
           price: item.price,
           description: item.description,
           title: item.title,
@@ -111,8 +119,9 @@ export class CatalogStore {
       this.removeFromBasket(item);
       return;
     }
+    const itemSize = item.size || '';
     this._basket.update(basket => {
-      const index = basket.findIndex(idx => idx.id === item.id);
+      const index = basket.findIndex(idx => idx.id === item.id && (idx.size || '') === itemSize);
       if (index !== -1) {
         const next = [...basket];
         next[index] = new CatalogItem({
@@ -136,6 +145,8 @@ export class CatalogStore {
           return new CatalogItem({
             id: catalogItem.id,
             imgUri: catalogItem.imgUri,
+            imgUriAlt: catalogItem.imgUriAlt,
+            images: catalogItem.images,
             price: catalogItem.price,
             fit: catalogItem.fit,
             description: catalogItem.description,
@@ -154,6 +165,8 @@ export class CatalogStore {
           return new CatalogItem({
             id: catalogItem.id,
             imgUri: catalogItem.imgUri,
+            imgUriAlt: catalogItem.imgUriAlt,
+            images: catalogItem.images,
             price: catalogItem.price,
             fit: catalogItem.fit,
             description: catalogItem.description,

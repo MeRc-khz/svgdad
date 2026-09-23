@@ -5,6 +5,10 @@ export const Items = [{
   "id": 0,
   "imgUri": "assets/images/products/bzrlnx-tee-front-clean.jpg",
   "imgUriAlt": "assets/images/products/bzrlnx-tee-back.jpg",
+  "images": [
+    "assets/images/products/bzrlnx-tee-front-clean.jpg",
+    "assets/images/products/bzrlnx-tee-back.jpg"
+  ],
   "title": "BzrLnx QR Tee",
   "fit": ["small","medium","large","x-large", "xx-large"],
   "description": "White cotton tee with the BzrLnx QR-code chest print — scan it, land on the site. Front graphic, QR back print.",

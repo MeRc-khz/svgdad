@@ -17,6 +17,7 @@ import { ProductsContainerComponent } from './products-container/products-contai
 import { ProductsViewComponent } from './products-view/products-view.component';
 import { ItemViewComponent } from './item-view/item-view.component';
 import { CartViewComponent } from './cart-view/cart-view.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
 //service
 import { CatalogHttpService } from './services/catalog-http.service';
@@ -38,6 +39,6 @@ import { PaymentsService } from './services/payments.service';
     MatIconModule
   ],
   providers: [PaymentsService, CatalogHttpService],
-  declarations: [ProductsContainerComponent, ProductsViewComponent, ItemViewComponent, CartViewComponent]
+  declarations: [ProductsContainerComponent, ProductsViewComponent, ItemViewComponent, CartViewComponent, ProductDetailComponent]
 })
 export class ProductsModule { }

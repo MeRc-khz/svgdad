@@ -44,6 +44,46 @@ if (process.env.STRIPE_SECRET_KEY) {
   }
 }
 
+// Live catalog from Shopify public storefront API (products.json, no auth needed)
+app.get('/api/catalog', function (req, res) {
+  try {
+    const sreq = require('https').request({
+      hostname: 'if3711-4m.myshopify.com', path: '/products.json?limit=20', method: 'GET',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; SvgDadSite/1.0)' }
+    }, sres => {
+      let body = '';
+      sres.on('data', d => body += d);
+      sres.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          const items = data.products.map((p, i) => ({
+            id: i,
+            shopifyId: 'gid://shopify/Product/' + p.id,
+            handle: p.handle,
+            buyUrl: 'https://if3711-4m.myshopify.com/products/' + p.handle,
+            imgUri: (p.images && p.images[0]) ? p.images[0].src : '',
+            images: (p.images || []).map(im => im.src),
+            title: p.title,
+            description: (p.body_html || '').replace(/<[^>]+>/g, '').slice(0, 200),
+            price: parseFloat(p.variants[0].price),
+            fit: ['small', 'medium', 'large', 'x-large', 'xx-large'],
+            ordered: false,
+            quantity: 1
+          }));
+          res.json(items);
+        } catch (err) {
+          console.error('catalog parse error:', err.message, body.slice(0, 200));
+          res.json([]);
+        }
+      });
+    });
+    sreq.on('error', () => res.json([]));
+    sreq.end();
+  } catch (err) {
+    res.json([]);
+  }
+});
+
 // Health check endpoint
 app.get('/ping', function (req, res) {
   return res.send('pong');

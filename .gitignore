@@ -46,3 +46,6 @@ Thumbs.db
 /server/node_modules
 
 server/.env
+
+# server test artifact
+/server/dist

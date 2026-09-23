@@ -101,6 +101,7 @@
               <p class="product-desc" *ngIf="item.description">{{ item.description }}</p>
               
               <div class="meta-row">
+                <span class="badge-tag" *ngIf="item.size">SIZE: {{ item.size.toUpperCase() }}</span>
                 <span class="badge-tag">AUTHENTIC DROP</span>
                 <span class="price-each" *ngIf="(item.quantity || 1) > 1">({{ item.price | currency }} each)</span>
               </div>

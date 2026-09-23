@@ -1,0 +1,168 @@
+<div class="pd-page">
+  <!-- Breadcrumb -->
+  <nav class="pd-breadcrumb" aria-label="Breadcrumb">
+    <button class="crumb-link" (click)="goBack()">THE DROP</button>
+    <mat-icon>chevron_right</mat-icon>
+    <span class="crumb-current">{{ item()?.title || 'LOADING' }}</span>
+  </nav>
+
+  <!-- Not found state -->
+  <div class="pd-missing" *ngIf="notFound() && !item()">
+    <mat-icon>inventory_2</mat-icon>
+    <h1>PIECE NOT FOUND</h1>
+    <p>That item moved or sold out. Get back to the drop before it's gone.</p>
+    <button mat-raised-button class="btn-back-drop" (click)="goBack()">BACK TO THE DROP</button>
+  </div>
+
+  <div class="pd-layout" *ngIf="item() as it">
+
+    <!-- ===================== LEFT: sticky gallery ===================== -->
+    <section class="pd-gallery-col" aria-label="Product images">
+      <div class="gallery-sticky">
+        <div class="gallery-main-frame">
+          <span class="gallery-drop-badge">AUTHENTIC DROP</span>
+          <img
+            class="gallery-main-img"
+            [src]="images()[selectedImage()]"
+            [alt]="it.title + ' — image ' + (selectedImage() + 1)"
+            (click)="selectImage((selectedImage() + 1) % images().length)"
+          >
+          <span class="gallery-img-count" *ngIf="images().length > 1">{{ selectedImage() + 1 }} / {{ images().length }}</span>
+        </div>
+
+        <!-- Thumbnail picker -->
+        <div class="gallery-thumbs" *ngIf="images().length > 1" role="listbox" aria-label="Choose product image">
+          <button
+            *ngFor="let img of images(); let i = index"
+            class="gallery-thumb"
+            [class.active]="i === selectedImage()"
+            (click)="selectImage(i)"
+            [attr.aria-label]="'Show image ' + (i + 1)"
+          >
+            <img [src]="img" [alt]="it.title + ' thumbnail ' + (i + 1)">
+          </button>
+        </div>
+
+        <div class="gallery-trust">
+          <div class="trust-line"><mat-icon>verified</mat-icon><span>Heavyweight Streetwear</span></div>
+          <div class="trust-line"><mat-icon>local_shipping</mat-icon><span>Free Shipping Over $75</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RIGHT: details rail ===================== -->
+    <section class="pd-info-col" aria-label="Product details">
+
+      <!-- Title / rating / price -->
+      <div class="info-header">
+        <span class="info-vendor">SAVAGE DAD &bull; STREET CERTIFIED</span>
+        <h1 class="info-title">{{ it.title }}</h1>
+
+        <div class="rating-row">
+          <span class="stars" aria-hidden="true">
+            <ng-container *ngFor="let s of starsArray(rating())">
+              <mat-icon *ngIf="s === 1">star</mat-icon>
+              <mat-icon *ngIf="s === 0.5">star_half</mat-icon>
+              <mat-icon *ngIf="s === 0">star_border</mat-icon>
+            </ng-container>
+          </span>
+          <span class="rating-num">{{ rating() }}</span>
+          <button class="rating-count" (click)="null" tabindex="-1">{{ reviewStats().count }} REVIEWS</button>
+        </div>
+
+        <div class="price-row">
+          <span class="price-now">{{ it.price | currency }}</span>
+          <span class="price-tag">FREE SHIPPING OVER $75</span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="info-desc" *ngIf="it.description">
+        <p>{{ it.description }}</p>
+      </div>
+
+      <!-- Size picker -->
+      <div class="size-block">
+        <div class="size-head">
+          <span class="block-label">SIZE</span>
+          <span class="size-hint">TRUE TO SIZE</span>
+        </div>
+        <div class="size-grid">
+          <button
+            *ngFor="let s of sizes()"
+            class="size-chip"
+            [class.active]="selectedSize() === s"
+            (click)="selectSize(s)"
+          >{{ s }}</button>
+        </div>
+      </div>
+
+      <!-- Qty + CTAs -->
+      <div class="buy-block">
+        <div class="qty-wrap">
+          <button class="qty-btn" (click)="decrementQty()" aria-label="Decrease quantity"><mat-icon>remove</mat-icon></button>
+          <span class="qty-val">{{ selectedQty() }}</span>
+          <button class="qty-btn" (click)="incrementQty()" aria-label="Increase quantity"><mat-icon>add</mat-icon></button>
+        </div>
+        <button mat-raised-button class="btn-add-bag" (click)="addToBag()">
+          <mat-icon>shopping_bag</mat-icon>
+          <span>ADD TO BAG</span>
+        </button>
+      </div>
+      <button mat-raised-button class="btn-buy-now" (click)="buyNow()">
+        <mat-icon>bolt</mat-icon>
+        <span>SECURE THE BAG — BUY NOW</span>
+      </button>
+
+      <div class="assurance-row">
+        <span class="assurance"><mat-icon>lock</mat-icon> 256-BIT ENCRYPTED CHECKOUT</span>
+        <span class="assurance"><mat-icon>autorenew</mat-icon> PRINTED ON DEMAND, SHIPPED DIRECT</span>
+      </div>
+
+      <!-- Specs strip -->
+      <div class="specs-strip">
+        <div class="spec"><span class="spec-k">FIT</span><span class="spec-v">STREET STRUCTURED</span></div>
+        <div class="spec"><span class="spec-k">FABRIC</span><span class="spec-v">HEAVYWEIGHT COTTON</span></div>
+        <div class="spec"><span class="spec-k">CARE</span><span class="spec-v">COLD WASH, HANG DRY</span></div>
+      </div>
+
+      <!-- Reviews -->
+      <div class="reviews-block" id="reviews">
+        <div class="reviews-head">
+          <h2 class="reviews-title">STREET VERIFIED REVIEWS</h2>
+          <div class="reviews-summary">
+            <span class="stars small" aria-hidden="true">
+              <ng-container *ngFor="let s of starsArray(rating())">
+                <mat-icon *ngIf="s === 1">star</mat-icon>
+                <mat-icon *ngIf="s === 0.5">star_half</mat-icon>
+                <mat-icon *ngIf="s === 0">star_border</mat-icon>
+              </ng-container>
+            </span>
+            <span class="rating-num">{{ rating() }} / 5</span>
+            <span class="reviews-count">&bull; {{ reviewStats().count }} REVIEWS</span>
+          </div>
+        </div>
+
+        <article class="review-card" *ngFor="let r of reviews()">
+          <div class="review-top">
+            <span class="review-author">{{ r.author }}</span>
+            <span class="review-verified" *ngIf="r.verified"><mat-icon>verified</mat-icon> VERIFIED BUYER</span>
+          </div>
+          <div class="review-mid">
+            <span class="stars small" aria-hidden="true">
+              <ng-container *ngFor="let s of starsArray(r.rating)">
+                <mat-icon *ngIf="s === 1">star</mat-icon>
+                <mat-icon *ngIf="s === 0.5">star_half</mat-icon>
+                <mat-icon *ngIf="s === 0">star_border</mat-icon>
+              </ng-container>
+            </span>
+            <span class="review-date">{{ r.date }}</span>
+          </div>
+          <h3 class="review-title">{{ r.title }}</h3>
+          <p class="review-body">{{ r.body }}</p>
+        </article>
+      </div>
+
+    </section>
+  </div>
+</div>
