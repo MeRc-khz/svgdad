@@ -11,6 +11,9 @@ import { OverlayService } from '../../../components/overlay/services/overlay.ser
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
+  // id of the item whose quick-view button is hovered (drives the image overlay tag)
+  public quickHoverId = signal<number | null>(null);
   public catalog = this.catalogStore.catalog;
 
   public featuredItems = computed(() => {
@@ -40,6 +43,10 @@ export class HomeComponent implements OnInit {
     }
     this.catalogStore.addToBasket(item, 1);
     this.sideListService.openDrawer();
+  }
+
+  openProduct(item: CatalogItem) {
+    this.router.navigate(['/products/item', item.id]);
   }
 
   quickView(item: CatalogItem, event?: Event) {

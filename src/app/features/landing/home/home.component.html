@@ -124,15 +124,15 @@
 
     <div class="featured-grid">
       <article class="product-card" *ngFor="let item of featuredItems()">
-        <div class="card-media-wrap" (click)="quickView(item, $event)">
+        <div class="card-media-wrap" (click)="openProduct(item)">
           <img [src]="item.imgUri || 'assets/images/painteddogs.png'" [alt]="item.title" class="product-thumb">
-          <span class="quick-view-btn"><mat-icon>visibility</mat-icon> Quick View</span>
+          <span class="quick-view-btn" [class.quick-view-visible]="quickHoverId() === item.id"><mat-icon>visibility</mat-icon> Quick View</span>
           <span class="drop-badge">AUTHENTIC DROP</span>
         </div>
 
         <div class="card-body">
           <div class="card-title-row">
-            <h3 class="product-name" (click)="quickView(item, $event)">{{ item.title }}</h3>
+            <h3 class="product-name" (click)="openProduct(item)">{{ item.title }}</h3>
             <span class="product-price">{{ item.price | currency }}</span>
           </div>
 
@@ -143,7 +143,13 @@
               <mat-icon>shopping_bag</mat-icon>
               <span>ADD TO BAG</span>
             </button>
-            <button mat-icon-button class="btn-quick-icon" (click)="quickView(item, $event)" aria-label="Quick View">
+            <button
+              mat-icon-button
+              class="btn-quick-icon"
+              (click)="quickView(item, $event)"
+              (mouseenter)="quickHoverId.set(item.id)"
+              (mouseleave)="quickHoverId.set(null)"
+              aria-label="Quick View">
               <mat-icon>visibility</mat-icon>
             </button>
           </div>

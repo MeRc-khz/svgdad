@@ -429,6 +429,11 @@
         }
       }
 
+      /* Quick View tag shows while hovering the quick-view icon button */
+      .card-media-wrap .quick-view-btn.quick-view-visible {
+        opacity: 1;
+      }
+
       .card-media-wrap {
         position: relative;
         height: 220px;
