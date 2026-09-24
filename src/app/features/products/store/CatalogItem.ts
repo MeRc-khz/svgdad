@@ -15,6 +15,9 @@ export class CatalogItem {
     constructor(props) {
         this.id = props.id;
         this.imgUri = props.imgUri;
+        this.imgUriAlt = props.imgUriAlt;
+        this.images = props.images;
+        this.size = props.size;
         this.price = props.price;
         this.description = props.description;
         this.title = props.title;
