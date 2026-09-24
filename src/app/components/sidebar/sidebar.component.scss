@@ -39,7 +39,7 @@
         color: var(--sd-text-primary, #EBE1D9);
 
         .brand-accent {
-          color: var(--sd-primary, #FFB683);
+          color: var(--sd-primary, #FFF800);
         }
       }
 
@@ -56,7 +56,7 @@
       color: var(--sd-text-muted, #A89F95);
       transition: color 0.15s ease, transform 0.15s ease;
       &:hover {
-        color: var(--sd-primary, #FFB683);
+        color: var(--sd-primary, #FFF800);
         transform: rotate(90deg);
       }
     }
@@ -94,10 +94,10 @@
 
         &:hover {
           background-color: rgba(255, 182, 131, 0.08);
-          color: var(--sd-primary, #FFB683);
+          color: var(--sd-primary, #FFF800);
 
           mat-icon {
-            color: var(--sd-primary, #FFB683);
+            color: var(--sd-primary, #FFF800);
           }
         }
 
@@ -105,12 +105,12 @@
           color: var(--sd-text-primary, #EBE1D9);
 
           mat-icon {
-            color: var(--sd-primary, #FFB683);
+            color: var(--sd-primary, #FFF800);
           }
 
           .link-badge {
             margin-left: auto;
-            background: var(--sd-primary, #FFB683);
+            background: var(--sd-primary, #FFF800);
             color: #1F1B16;
             font-size: 10px;
             font-weight: 900;
@@ -149,7 +149,7 @@
 
       .sidebar-promo-box {
         background: #1F1B16;
-        border: 1px dashed var(--sd-primary, #FFB683);
+        border: 1px dashed var(--sd-primary, #FFF800);
         border-radius: 8px;
         margin: 12px 20px;
         padding: 12px 14px;
@@ -158,7 +158,7 @@
           font-family: var(--sd-font-display, 'Bangers', sans-serif);
           font-size: 16px;
           letter-spacing: 0.8px;
-          color: var(--sd-primary, #FFB683);
+          color: var(--sd-primary, #FFF800);
           margin-bottom: 4px;
         }
 
@@ -210,8 +210,8 @@
       }
 
       &:hover {
-        border-color: var(--sd-primary, #FFB683) !important;
-        color: var(--sd-primary, #FFB683) !important;
+        border-color: var(--sd-primary, #FFF800) !important;
+        color: var(--sd-primary, #FFF800) !important;
       }
     }
   }

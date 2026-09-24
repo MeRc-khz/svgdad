@@ -38,7 +38,7 @@
       gap: 10px;
 
       .header-icon {
-        color: var(--sd-primary, #FFB683);
+        color: var(--sd-primary, #FFF800);
       }
 
       .drawer-title {
@@ -50,7 +50,7 @@
       }
 
       .item-badge {
-        background: var(--sd-primary, #FFB683);
+        background: var(--sd-primary, #FFF800);
         color: #1F1B16;
         font-size: 12px;
         font-weight: 700;
@@ -63,7 +63,7 @@
       color: var(--sd-text-muted, #A89F95);
       transition: color 0.2s ease, transform 0.2s ease;
       &:hover {
-        color: var(--sd-primary, #FFB683);
+        color: var(--sd-primary, #FFF800);
         transform: rotate(90deg);
       }
     }
@@ -80,7 +80,7 @@
       color: var(--sd-secondary, #DBC0A3);
 
       strong {
-        color: var(--sd-primary, #FFB683);
+        color: var(--sd-primary, #FFF800);
       }
 
       .shipping-unlocked {
@@ -144,7 +144,7 @@
         font-family: var(--sd-font-display, 'Bangers', sans-serif);
         font-size: 28px;
         letter-spacing: 1px;
-        color: var(--sd-primary, #FFB683);
+        color: var(--sd-primary, #FFF800);
         margin: 0 0 10px;
       }
 
@@ -156,7 +156,7 @@
       }
 
       .btn-explore {
-        background: var(--sd-primary, #FFB683);
+        background: var(--sd-primary, #FFF800);
         color: #1F1B16;
         font-weight: 700;
         letter-spacing: 0.5px;
@@ -281,7 +281,7 @@
 
                 &:hover {
                   background: rgba(255, 255, 255, 0.1);
-                  color: var(--sd-primary, #FFB683);
+                  color: var(--sd-primary, #FFF800);
                 }
               }
 
@@ -297,7 +297,7 @@
             .item-price {
               font-size: 16px;
               font-weight: 700;
-              color: var(--sd-primary, #FFB683);
+              color: var(--sd-primary, #FFF800);
             }
           }
         }
@@ -337,7 +337,7 @@
     .btn-checkout {
       width: 100%;
       height: 48px;
-      background: var(--sd-primary, #FFB683) !important;
+      background: var(--sd-primary, #FFF800) !important;
       color: #1F1B16 !important;
       font-family: var(--sd-font-body);
       font-size: 15px;
@@ -375,7 +375,7 @@
       letter-spacing: 0.5px;
       font-size: 13px;
       &:hover {
-        color: var(--sd-primary, #FFB683) !important;
+        color: var(--sd-primary, #FFF800) !important;
       }
     }
   }

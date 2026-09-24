@@ -50,7 +50,7 @@ This will execute the end-to-end tests via Protractor.
 
 * **Component Style:** The project uses SCSS for styling components. All styling
   must use the `--sd-*` CSS custom properties from `src/assets/styles.scss`
-  (Savage Dad dark theme: bg `#1F1B16`, primary Sunburn Orange `#FFB683`/`#A63E00`,
+  (Savage Dad dark theme: bg `#1F1B16`, primary Savage yellow `#FFF800`/`#A63E00`,
   secondary Earthy Tan `#DBC0A3`, text `#EBE1D9`). Bangers for display headings,
   Roboto for body/UI. Never use Material's default indigo (#3f51b5) or pink
   (#f44336/#ff4081) — the `indigo-pink.css` prebuilt import is base-only.

@@ -28,7 +28,7 @@
         color: var(--sd-text-muted, #A89F95);
         transition: color 0.15s ease;
         &:hover {
-          color: var(--sd-primary, #FFB683);
+          color: var(--sd-primary, #FFF800);
         }
       }
 
@@ -45,7 +45,7 @@
           color: var(--sd-text-primary, #EBE1D9);
 
           .logo-accent {
-            color: var(--sd-primary, #FFB683);
+            color: var(--sd-primary, #FFF800);
           }
         }
       }
@@ -69,7 +69,7 @@
 
           &:hover,
           &.active {
-            color: var(--sd-primary, #FFB683) !important;
+            color: var(--sd-primary, #FFF800) !important;
             background-color: rgba(255, 182, 131, 0.08);
           }
 
@@ -77,7 +77,7 @@
             color: var(--sd-secondary, #DBC0A3) !important;
             &:hover,
             &.active {
-              color: var(--sd-primary, #FFB683) !important;
+              color: var(--sd-primary, #FFF800) !important;
             }
           }
         }
@@ -94,7 +94,7 @@
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 0.5px;
-        color: var(--sd-primary, #FFB683);
+        color: var(--sd-primary, #FFF800);
         margin-right: 12px;
         cursor: pointer;
         transition: background-color 0.15s ease;
@@ -126,7 +126,7 @@
           transition: color 0.15s ease, transform 0.15s ease;
 
           &:hover {
-            color: var(--sd-primary, #FFB683);
+            color: var(--sd-primary, #FFF800);
             transform: scale(1.08);
           }
         }
@@ -135,7 +135,7 @@
           position: absolute;
           top: 2px;
           right: 2px;
-          background: var(--sd-primary, #FFB683);
+          background: var(--sd-primary, #FFF800);
           color: #1F1B16;
           font-size: 11px;
           font-weight: 900;

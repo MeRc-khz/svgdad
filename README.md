@@ -15,7 +15,7 @@ are CSS custom properties (`--sd-*`) defined in `src/assets/styles.scss`:
 | `--sd-surface` | `#2B2723` | Surface |
 | `--sd-surface-card` | `#25211D` (hover `#322D27`) | Cards |
 | `--sd-border` | `#3E372E` (light `#524A3F`) | Borders |
-| `--sd-primary` | `#FFB683` | Primary (Sunburn Orange, dark-mode value) |
+| `--sd-primary` | `#FFF800` | Primary (Savage yellow, dark-mode value) |
 | `--sd-primary-dark` | `#A63E00` | Sunburn Orange (light-mode / active) |
 | `--sd-secondary` | `#DBC0A3` | Earthy Tan accents |
 | `--sd-text-primary` | `#EBE1D9` | Body text |

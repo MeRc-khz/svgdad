@@ -36,7 +36,7 @@
     font-size: 12px;
 
     &:hover {
-      color: var(--sd-primary, #FFB683);
+      color: var(--sd-primary, #FFF800);
     }
   }
 
@@ -48,7 +48,7 @@
   }
 
   .crumb-current {
-    color: var(--sd-primary, #FFB683);
+    color: var(--sd-primary, #FFF800);
     font-weight: 700;
     letter-spacing: 1px;
     white-space: nowrap;
@@ -80,7 +80,7 @@
     font-size: 34px;
     letter-spacing: 2px;
     margin: 14px 0 8px;
-    color: var(--sd-primary, #FFB683);
+    color: var(--sd-primary, #FFF800);
   }
 
   p {
@@ -90,7 +90,7 @@
 }
 
 .btn-back-drop {
-  background: var(--sd-primary, #FFB683) !important;
+  background: var(--sd-primary, #FFF800) !important;
   color: var(--sd-bg, #1F1B16) !important;
   font-weight: 800;
 }
@@ -142,7 +142,7 @@
     left: 14px;
     z-index: 2;
     background: rgba(255, 182, 131, 0.12);
-    color: var(--sd-primary, #FFB683);
+    color: var(--sd-primary, #FFF800);
     border: 1px solid rgba(255, 182, 131, 0.35);
     font-size: 11px;
     font-weight: 800;
@@ -196,8 +196,8 @@
     }
 
     &.active {
-      border-color: var(--sd-primary, #FFB683);
-      box-shadow: 0 0 0 1px var(--sd-primary, #FFB683);
+      border-color: var(--sd-primary, #FFF800);
+      box-shadow: 0 0 0 1px var(--sd-primary, #FFF800);
     }
   }
 }
@@ -220,7 +220,7 @@
       font-size: 16px;
       width: 16px;
       height: 16px;
-      color: var(--sd-primary, #FFB683);
+      color: var(--sd-primary, #FFF800);
     }
   }
 }
@@ -263,13 +263,13 @@
       font-size: 18px;
       width: 18px;
       height: 18px;
-      color: var(--sd-primary, #FFB683);
+      color: var(--sd-primary, #FFF800);
     }
   }
 
   .rating-num {
     font-weight: 800;
-    color: var(--sd-primary, #FFB683);
+    color: var(--sd-primary, #FFF800);
     font-size: 14px;
   }
 
@@ -297,7 +297,7 @@
   .price-now {
     font-family: var(--sd-font-display, 'Bangers', cursive);
     font-size: 36px;
-    color: var(--sd-primary, #FFB683);
+    color: var(--sd-primary, #FFF800);
   }
 
   .price-tag {
@@ -375,8 +375,8 @@
     }
 
     &.active {
-      background: var(--sd-primary, #FFB683);
-      border-color: var(--sd-primary, #FFB683);
+      background: var(--sd-primary, #FFF800);
+      border-color: var(--sd-primary, #FFF800);
       color: var(--sd-bg, #1F1B16);
     }
   }
@@ -414,7 +414,7 @@
 
       &:hover {
         background: var(--sd-surface-card-hover, #322D27);
-        color: var(--sd-primary, #FFB683);
+        color: var(--sd-primary, #FFF800);
       }
     }
 
@@ -429,7 +429,7 @@
   .btn-add-bag {
     flex: 1;
     height: 48px;
-    background: var(--sd-primary, #FFB683) !important;
+    background: var(--sd-primary, #FFF800) !important;
     color: var(--sd-bg, #1F1B16) !important;
     font-weight: 800;
     letter-spacing: 1px;
@@ -450,11 +450,11 @@
   font-weight: 900;
   letter-spacing: 1.2px;
   border-radius: 10px;
-  border: 2px solid var(--sd-primary, #FFB683);
+  border: 2px solid var(--sd-primary, #FFF800);
 
   mat-icon {
     margin-right: 6px;
-    color: var(--sd-primary-dark, #A63E00);
+    color: var(--sd-primary, #FFF800);
   }
 }
 
@@ -553,7 +553,7 @@
     font-size: 15px;
     width: 15px;
     height: 15px;
-    color: var(--sd-primary, #FFB683);
+    color: var(--sd-primary, #FFF800);
   }
 }
 
