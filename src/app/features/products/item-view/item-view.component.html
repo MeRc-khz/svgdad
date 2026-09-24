@@ -20,6 +20,20 @@
 
       <p class="modal-item-desc" *ngIf="item().description">{{ item().description }}</p>
 
+      <!-- Size selection: required before ADD TO BAG -->
+      <div class="modal-size-block">
+        <label class="modal-size-label" for="qv-size-select">SIZE</label>
+        <select
+          id="qv-size-select"
+          class="modal-size-select"
+          [value]="selectedSize()"
+          (change)="selectSize($event)">
+          <option [ngValue]="''" disabled [selected]="!selectedSize()">Select size</option>
+          <option *ngFor="let s of sizes()" [value]="s" [selected]="selectedSize() === s">{{ sizeLabel(s) }}</option>
+        </select>
+        <span class="modal-size-error" *ngIf="sizeError()">PICK A SIZE FIRST</span>
+      </div>
+
       <div class="modal-specs">
         <div class="spec-item">
           <mat-icon>verified</mat-icon>
@@ -32,7 +46,7 @@
       </div>
 
       <div class="modal-actions-row">
-        <button mat-raised-button class="btn-modal-add" (click)="add2Basket(item())">
+        <button mat-raised-button class="btn-modal-add" (click)="add2Basket(item())" [class.btn-blocked]="!selectedSize()">
           <mat-icon>shopping_bag</mat-icon>
           <span>ADD TO BAG</span>
         </button>

@@ -1,4 +1,4 @@
-import { Component, OnInit, computed } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CatalogStore } from '../store/catalog-store.service';
 import { ModalNetService } from '../../../components/overlay/modal/services/modal-net.service';
@@ -11,6 +11,34 @@ import { SideListService } from '../../../components/side-list/side-list.service
 })
 export class ItemViewComponent implements OnInit {
   public item: any;
+
+  // Quick-view size selection: ADD TO BAG is blocked until a size is picked
+  public selectedSize = signal<string>('');
+  public sizeError = signal<boolean>(false);
+
+  public sizes = computed<string[]>(() => {
+    const it = this.item ? this.item() : null;
+    if (!it) return [];
+    const fit: any = (it as any).fit;
+    if (Array.isArray(fit) && fit.length) {
+      return fit.map((f: any) => String(f));
+    }
+    return ['S', 'M', 'L', 'XL', '2XL'];
+  });
+
+  selectSize(event: any) {
+    const val = event.target ? event.target.value : event;
+    this.selectedSize.set(val || '');
+    this.sizeError.set(false);
+  }
+
+  sizeLabel(s: string): string {
+    const map: any = {
+      'small': 'S', 'medium': 'M', 'large': 'L',
+      'x-large': 'XL', 'xx-large': '2XL'
+    };
+    return map[s] ? map[s] : s.toUpperCase();
+  }
 
   constructor(
     public modalNetService: ModalNetService,
@@ -41,7 +69,14 @@ export class ItemViewComponent implements OnInit {
   }
 
   add2Basket(item) {
-    this.catalogStore.addToBasket(item, 1);
+    if (!this.selectedSize()) {
+      this.sizeError.set(true);
+      return;
+    }
+    const sized = Object.assign(Object.create(Object.getPrototypeOf(item)), item, {
+      size: this.sizeLabel(this.selectedSize())
+    });
+    this.catalogStore.addToBasket(sized, 1);
     this.closeModal();
     this.sideListService.openDrawer();
   }

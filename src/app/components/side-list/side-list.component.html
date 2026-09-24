@@ -57,8 +57,9 @@
               <mat-icon>delete_outline</mat-icon>
             </button>
           </div>
-          <div class="item-meta" *ngIf="item.fit">
-            <span class="fit-tag">Standard Drop</span>
+          <div class="item-meta">
+            <span class="fit-tag" *ngIf="item.size">SIZE: {{ item.size.toUpperCase() }}</span>
+            <span class="fit-tag" *ngIf="!item.size">Standard Drop</span>
           </div>
           <div class="item-actions-row">
             <!-- Stepper -->
