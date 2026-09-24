@@ -222,6 +222,11 @@
         }
       }
 
+      /* Quick View tag shows while hovering the quick-view icon button */
+      .card-visual-wrap .quick-view-overlay.quick-view-visible {
+        opacity: 1;
+      }
+
       /* Image Visual */
       .card-visual-wrap {
         position: relative;

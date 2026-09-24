@@ -55,11 +55,11 @@
     <div class="products-grid">
       <article class="catalog-item-card" *ngFor="let item of filteredCatalog()">
         
-        <!-- Media Visual -->
-        <div class="card-visual-wrap" (click)="previewItem(item)">
+        <!-- Media Visual: click navigates to the product page -->
+        <div class="card-visual-wrap" (click)="openProduct(item)">
           <img [src]="item.imgUri || 'assets/images/painteddogs.png'" [alt]="item.title" class="product-img">
           <span class="pill-drop-badge">AUTHENTIC DROP</span>
-          <span class="quick-view-overlay">
+          <span class="quick-view-overlay" [class.quick-view-visible]="quickHoverId() === item.id">
             <mat-icon>visibility</mat-icon>
             <span>Quick View</span>
           </span>
@@ -68,7 +68,7 @@
         <!-- Details -->
         <div class="card-details">
           <div class="title-price-row">
-            <h2 class="item-title" (click)="previewItem(item)">{{ item.title }}</h2>
+            <h2 class="item-title" (click)="openProduct(item)">{{ item.title }}</h2>
             <span class="item-price">{{ item.price | currency }}</span>
           </div>
 
@@ -98,8 +98,14 @@
               <span>ADD TO BAG</span>
             </button>
 
-            <!-- Quick View Icon -->
-            <button mat-icon-button class="btn-card-view" (click)="previewItem(item)" aria-label="View Details">
+            <!-- Quick View Icon: hover shows the Quick View tag over the image, click opens the modal -->
+            <button
+              mat-icon-button
+              class="btn-card-view"
+              (click)="previewItem(item)"
+              (mouseenter)="quickHoverId.set(item.id)"
+              (mouseleave)="quickHoverId.set(null)"
+              aria-label="Quick View">
               <mat-icon>visibility</mat-icon>
             </button>
           </div>

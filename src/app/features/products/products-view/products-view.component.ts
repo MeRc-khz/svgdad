@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CatalogStore } from '../store/catalog-store.service';
 import { OverlayService } from '../../../components/overlay/services/overlay.service';
 import { CatalogItem } from '../store/CatalogItem';
@@ -13,6 +13,9 @@ import { SideListService } from '../../../components/side-list/side-list.service
 export class ProductsViewComponent implements OnInit {
   public catalog = this.catalogStore.catalog;
   public selectedCategory = signal<string>('ALL');
+
+  // id of the item whose quick-view button is hovered (drives the image overlay tag)
+  public quickHoverId = signal<number | null>(null);
 
   // Track local card quantities
   public itemQuantities = signal<{ [id: number]: number }>({});
@@ -58,7 +61,8 @@ export class ProductsViewComponent implements OnInit {
     public overlayService: OverlayService,
     public catalogStore: CatalogStore,
     private sideListService: SideListService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { 
     this.loadData();
   }
@@ -105,6 +109,10 @@ export class ProductsViewComponent implements OnInit {
     const quantity = qty ? parseInt(qty, 10) : this.getItemQty(item);
     this.catalogStore.addToBasket(item, quantity || 1);
     this.sideListService.openDrawer();
+  }
+
+  openProduct(item: CatalogItem) {
+    this.router.navigate(['/products/item', item.id]);
   }
 
   previewItem(item: CatalogItem) {
